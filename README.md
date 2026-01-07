@@ -132,5 +132,53 @@ Good resources to learn before starting AWAE or after finishing your OSWE exam
 | 8 | Hacker101 - Source Code Review | https://www.hacker101.com/sessions/source_review.html |
 
 
+## Advanced Exploitation Techniques
+
+Production-ready PoC examples with comprehensive lab manuals and methodology guides.
+
+### Deserialization Vulnerabilities
+
+| Order | Type | Example | Lab | PoC | Guide |
+|-------|------|---------|-----|-----|-------|
+| 1 | Java Deserialization | Commons Collections | Docker - Jenkins 2.46.1 | [PoC](poc-examples/java-deserialization-commons/) | [Guide](guides/Java-Deserialization-Methodology.md) |
+| 2 | .NET ViewState | ObjectDataProvider | Windows - DotNetNuke | [PoC](poc-examples/dotnet-viewstate-deserialization/) | [Guide](guides/.NET-Deserialization-Guide.md) |
+| 3 | PHP Object Injection | POP Chains | LAMP - WordPress | [PoC](poc-examples/php-object-injection/) | [Guide](guides/PHP-Deserialization-Patterns.md) |
+| 4 | Node.js Deserialization | node-serialize | Docker - Express.js | [PoC](poc-examples/nodejs-deserialization/) | - |
+
+### XXE (XML External Entity)
+
+| Order | Type | Example | Lab | PoC | Guide |
+|-------|------|---------|-----|-----|-------|
+| 1 | XXE File Read/SSRF | Local file disclosure & SSRF | Docker - Custom parser | [PoC](poc-examples/xxe-file-read-ssrf/) | [Guide](guides/XXE-Attack-Vectors.md) |
+
+### Template Injection
+
+| Order | Type | Example | Lab | PoC | Guide |
+|-------|------|---------|-----|-----|-------|
+| 1 | SSTI Jinja2 | Flask RCE | Docker - Flask | [PoC](poc-examples/ssti-jinja2-flask/) | [Guide](guides/SSTI-Exploitation-Guide.md) |
+
+### Advanced SQL Injection
+
+| Order | Type | Example | Lab | PoC | Guide |
+|-------|------|---------|-----|-----|-------|
+| 1 | MSSQL xp_cmdshell | SQLi to RCE | Windows - .NET app | [PoC](poc-examples/mssql-sqli-xp-cmdshell/) | [Guide](guides/Advanced-SQLi-Techniques.md) |
+| 2 | Second-Order SQLi | Stored payload | LAMP - Custom app | [PoC](poc-examples/second-order-sqli/) | [Guide](guides/Advanced-SQLi-Techniques.md) |
+
+
+## Methodology Guides
+
+Comprehensive guides for code review, exploitation, and exam preparation.
+
+| Order | Topic | Link |
+|-------|-------|------|
+| 1 | Java Deserialization Methodology | [Guide](guides/Java-Deserialization-Methodology.md) |
+| 2 | .NET Deserialization Guide | [Guide](guides/.NET-Deserialization-Guide.md) |
+| 3 | PHP Deserialization Patterns | [Guide](guides/PHP-Deserialization-Patterns.md) |
+| 4 | XXE Attack Vectors | [Guide](guides/XXE-Attack-Vectors.md) |
+| 5 | SSTI Exploitation Guide | [Guide](guides/SSTI-Exploitation-Guide.md) |
+| 6 | Advanced SQLi Techniques | [Guide](guides/Advanced-SQLi-Techniques.md) |
+| 7 | Code Review Checklists | [Guide](guides/Code-Review-Checklists.md) |
+
+
 
 
