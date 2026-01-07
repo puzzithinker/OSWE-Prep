@@ -132,52 +132,91 @@ Good resources to learn before starting AWAE or after finishing your OSWE exam
 | 8 | Hacker101 - Source Code Review | https://www.hacker101.com/sessions/source_review.html |
 
 
-## Advanced Exploitation Techniques
+## PoC Development Guides
 
-Production-ready PoC examples with comprehensive lab manuals and methodology guides.
+Comprehensive guides for building production-ready exploit scripts for OSWE.
+
+| Order | Name | Link |
+|-------|------|------|
+| 1 | Building a Reusable OSWE PoC Skeleton | [Guide](Building%20a%20Reusable%20OSWE%20PoC%20Skeleton.md) |
+| 2 | Exploit Writing for OSWE | [Guide](Exploit%20Writing%20for%20OSWE.md) |
+| 3 | Complete PoC Guide | [Guide](COMPLETE-POC-GUIDE.md) |
+| 4 | OSWE PoC Skeleton Guide | [Guide](OSWE-PoC-Skeleton-Guide.md) |
+| 5 | Advanced PoC Skeleton | [Example](poc-examples/advanced-skeleton/) |
+
+
+## Vulnerability Case Studies
+
+Detailed case studies documenting real-world vulnerabilities with exploitation chains.
+
+| Order | Application | Vulnerability Type | Link |
+|-------|-------------|-------------------|------|
+| 1 | Atmail 6.4 | XSS to RCE | [Study](Atmail-6.4-XSS-RCE-Study.md) |
+| 2 | ATutor 2.2.1 | Type Juggling | [Notes](notes/ATUTOR-2.2.1-TYPE-JUGGLING.md) |
+| 3 | ATutor 2.2.1 | Authentication Bypass to RCE | [Notes](notes/ATUTOR-2.2.1-AUTH-RCE.md) |
+| 4 | Bassmaster 1.5.1 | JavaScript Injection | [Notes](notes/BASSMASTER-1.5.1-JS-INJECTION.md) |
+| 5 | DotNetNuke | Cookie Deserialization | [Notes](notes/DOTNETNUKE-COOKIE-DESERIALIZATION.md) |
+| 6 | ManageEngine | SQL Injection to RCE | [Notes](notes/MANAGEENGINE-APPS-MANAGER-SQLI-RCE.md) |
+| 7 | Generic .NET | ViewState Deserialization | [Notes](notes/DOTNET-VIEWSTATE-DESERIALIZATION.md) |
+| 8 | Generic Java | Deserialization (Commons Collections) | [Notes](notes/JAVA-DESERIALIZATION-COMMONS-COLLECTIONS.md) |
+| 9 | Generic PHP | Object Injection | [Notes](notes/PHP-OBJECT-INJECTION.md) |
+| 10 | Generic Node.js | Deserialization | [Notes](notes/NODEJS-DESERIALIZATION.md) |
+| 11 | Generic MSSQL | SQL Injection (xp_cmdshell) | [Notes](notes/MSSQL-SQLI-XP-CMDSHELL.md) |
+| 12 | Generic | Second-Order SQL Injection | [Notes](notes/SECOND-ORDER-SQLI.md) |
+| 13 | Generic Flask | SSTI (Jinja2) | [Notes](notes/SSTI-JINJA2-FLASK.md) |
+| 14 | Generic XML Parser | XXE File Read/SSRF | [Notes](notes/XXE-FILE-READ-SSRF.md) |
+
+
+## Production-Ready PoC Examples
+
+Working exploit scripts with documentation organized by vulnerability type.
 
 ### Deserialization Vulnerabilities
 
-| Order | Type | Example | Lab | PoC | Guide |
-|-------|------|---------|-----|-----|-------|
-| 1 | Java Deserialization | Commons Collections | Docker - Jenkins 2.46.1 | [PoC](poc-examples/java-deserialization-commons/) | [Guide](guides/Java-Deserialization-Methodology.md) |
-| 2 | .NET ViewState | ObjectDataProvider | Windows - DotNetNuke | [PoC](poc-examples/dotnet-viewstate-deserialization/) | [Guide](guides/.NET-Deserialization-Guide.md) |
-| 3 | PHP Object Injection | POP Chains | LAMP - WordPress | [PoC](poc-examples/php-object-injection/) | [Guide](guides/PHP-Deserialization-Patterns.md) |
-| 4 | Node.js Deserialization | node-serialize | Docker - Express.js | [PoC](poc-examples/nodejs-deserialization/) | - |
+| Order | Type | Example | PoC | Notes |
+|-------|------|---------|-----|-------|
+| 1 | Java | Commons Collections | [PoC](poc-examples/java-deserialization-commons/) | [Notes](notes/JAVA-DESERIALIZATION-COMMONS-COLLECTIONS.md) |
+| 2 | .NET | ViewState Deserialization | [PoC](poc-examples/dotnet-viewstate-deserialization/) | [Notes](notes/DOTNET-VIEWSTATE-DESERIALIZATION.md) |
+| 3 | PHP | Object Injection | [PoC](poc-examples/php-object-injection/) | [Notes](notes/PHP-OBJECT-INJECTION.md) |
+| 4 | Node.js | node-serialize | [PoC](poc-examples/nodejs-deserialization/) | [Notes](notes/NODEJS-DESERIALIZATION.md) |
 
-### XXE (XML External Entity)
+### XSS to RCE Chains
 
-| Order | Type | Example | Lab | PoC | Guide |
-|-------|------|---------|-----|-----|-------|
-| 1 | XXE File Read/SSRF | Local file disclosure & SSRF | Docker - Custom parser | [PoC](poc-examples/xxe-file-read-ssrf/) | [Guide](guides/XXE-Attack-Vectors.md) |
+| Order | Application | Vulnerability | PoC | Notes |
+|-------|-------------|---------------|-----|-------|
+| 1 | Atmail 6.4 | XSS to RCE | [PoC](poc-examples/atmail-xss-rce/) | [Study](Atmail-6.4-XSS-RCE-Study.md) |
+
+### Authentication & Type Confusion
+
+| Order | Application | Vulnerability | PoC | Notes |
+|-------|-------------|---------------|-----|-------|
+| 1 | ATutor 2.2.1 | Type Juggling | [PoC](poc-examples/atutor-type-juggling/) | [Notes](notes/ATUTOR-2.2.1-TYPE-JUGGLING.md) |
+
+### JavaScript Injection
+
+| Order | Application | Vulnerability | PoC | Notes |
+|-------|-------------|---------------|-----|-------|
+| 1 | Bassmaster 1.5.1 | JS Injection | [PoC](poc-examples/bassmaster-js-injection/) | [Notes](notes/BASSMASTER-1.5.1-JS-INJECTION.md) |
+
+### SQL Injection
+
+| Order | Type | Example | PoC | Notes |
+|-------|------|---------|-----|-------|
+| 1 | MSSQL | xp_cmdshell RCE | [PoC](poc-examples/mssql-sqli-xp-cmdshell/) | [Notes](notes/MSSQL-SQLI-XP-CMDSHELL.md) |
+| 2 | MySQL | Second-Order SQLi | [PoC](poc-examples/second-order-sqli/) | [Notes](notes/SECOND-ORDER-SQLI.md) |
+| 3 | MySQL | ManageEngine Apps Manager | [PoC](poc-examples/manageengine-sqli/) | [Notes](notes/MANAGEENGINE-APPS-MANAGER-SQLI-RCE.md) |
 
 ### Template Injection
 
-| Order | Type | Example | Lab | PoC | Guide |
-|-------|------|---------|-----|-----|-------|
-| 1 | SSTI Jinja2 | Flask RCE | Docker - Flask | [PoC](poc-examples/ssti-jinja2-flask/) | [Guide](guides/SSTI-Exploitation-Guide.md) |
+| Order | Type | Example | PoC | Notes |
+|-------|------|---------|-----|-------|
+| 1 | Jinja2 | Flask SSTI | [PoC](poc-examples/ssti-jinja2-flask/) | [Notes](notes/SSTI-JINJA2-FLASK.md) |
 
-### Advanced SQL Injection
+### XXE (XML External Entity)
 
-| Order | Type | Example | Lab | PoC | Guide |
-|-------|------|---------|-----|-----|-------|
-| 1 | MSSQL xp_cmdshell | SQLi to RCE | Windows - .NET app | [PoC](poc-examples/mssql-sqli-xp-cmdshell/) | [Guide](guides/Advanced-SQLi-Techniques.md) |
-| 2 | Second-Order SQLi | Stored payload | LAMP - Custom app | [PoC](poc-examples/second-order-sqli/) | [Guide](guides/Advanced-SQLi-Techniques.md) |
-
-
-## Methodology Guides
-
-Comprehensive guides for code review, exploitation, and exam preparation.
-
-| Order | Topic | Link |
-|-------|-------|------|
-| 1 | Java Deserialization Methodology | [Guide](guides/Java-Deserialization-Methodology.md) |
-| 2 | .NET Deserialization Guide | [Guide](guides/.NET-Deserialization-Guide.md) |
-| 3 | PHP Deserialization Patterns | [Guide](guides/PHP-Deserialization-Patterns.md) |
-| 4 | XXE Attack Vectors | [Guide](guides/XXE-Attack-Vectors.md) |
-| 5 | SSTI Exploitation Guide | [Guide](guides/SSTI-Exploitation-Guide.md) |
-| 6 | Advanced SQLi Techniques | [Guide](guides/Advanced-SQLi-Techniques.md) |
-| 7 | Code Review Checklists | [Guide](guides/Code-Review-Checklists.md) |
+| Order | Type | Example | PoC | Notes |
+|-------|------|---------|-----|-------|
+| 1 | XXE | File Read/SSRF | [PoC](poc-examples/xxe-file-read-ssrf/) | [Notes](notes/XXE-FILE-READ-SSRF.md) |
 
 
 
