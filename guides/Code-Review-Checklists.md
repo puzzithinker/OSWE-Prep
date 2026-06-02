@@ -527,6 +527,31 @@ grep -rn "@app\\.route\|@RequestMapping\|app\\.get\|app\\.post" .
 | Cookie handling | Deserialization, Session fixation | MEDIUM |
 | Password reset | IDOR, Auth bypass | MEDIUM |
 
+### File Upload Quick Cheat Sheet (added for OSWE)
+
+**Dangerous functions / patterns**:
+- `move_uploaded_file($_FILES[...])`, `$_FILES['x']['name']` without sanitization
+- `basename($_FILES['f']['name'])` + direct use (still dangerous extension)
+- `pathinfo(..., PATHINFO_EXTENSION)` + weak `in_array`
+- `getimagesize()` / `exif_imagetype()` only (bypassable with magic + code)
+- .NET: `PostedFile.SaveAs(originalName)`
+- Java: `file.transferTo(new File(uploadDir, originalFilename))`
+
+**High-yield grep**:
+```bash
+grep -rn "move_uploaded_file\|$_FILES\|PostedFile\|MultipartFile\|getOriginalFilename" .
+```
+
+**Common bypasses to look for / test**:
+- Double extension: `shell.php.jpg`
+- Content-Type lie + correct ext
+- Magic bytes prefix (GIF89a / JPEG SOI) + .php
+- Case: `shell.PHP`
+- Path traversal in name or later include of upload path
+
+**See full treatment**: `guides/File-Upload-to-RCE.md` + `poc-examples/file-upload-rce/`
+
+
 ### Critical Files to Review First
 
 **PHP Applications**:

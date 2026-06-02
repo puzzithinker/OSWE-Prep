@@ -1,6 +1,27 @@
 # OSWE-Prep
 
-Useful tips and resources for preparing for exam.
+**Curated resources, PoC patterns, case studies, and methodology guides for Offensive Security WEB-300 (OSWE).**
+
+> **New to the repo?** Start with the **[OSWE Study Roadmap](OSWE-Study-Roadmap.md)** — an 8-week structured plan with topic priorities, lab recommendations, daily habits, and milestones mapped to the content here.
+
+This repo is documentation + production-quality Python PoC examples following consistent skeletons. All content is for authorized labs, CTFs, and OSWE exam preparation only.
+
+---
+
+## Start Here
+
+| Resource | Why It Matters | Link |
+|----------|----------------|------|
+| Study Roadmap | 8-week plan, priorities, how to use everything in this repo | [OSWE-Study-Roadmap.md](OSWE-Study-Roadmap.md) |
+| PoC Methodology | The reusable skeleton + patterns used in all examples | [Building a Reusable OSWE PoC Skeleton.md](Building%20a%20Reusable%20OSWE%20PoC%20Skeleton.md) |
+| Exploit Writing | Practical `requests` patterns, stages, context objects | [Exploit Writing for OSWE.md](Exploit%20Writing%20for%20OSWE.md) |
+| Complete PoC Guide | Navigation + how the different examples and advanced skeleton fit together | [COMPLETE-POC-GUIDE.md](COMPLETE-POC-GUIDE.md) |
+
+**Core Exam Topics (High Priority)**: SQLi→RCE (all DBs + second-order + blind), Deserialization (Java/.NET/PHP/Node), File Upload bypasses→RCE, XSS→privileged action→RCE, PHP Type Juggling, SSTI, XXE.
+
+See the Roadmap for the recommended order and time boxes.
+
+---
 
 ### Learning Material
 
@@ -18,9 +39,13 @@ Useful tips and resources for preparing for exam.
 | 10 | Understanding PHP Object Injection | https://securitycafe.ro/2015/01/05/understanding-php-object-injection/ |
 | 11 | Attacking .NET deserialization - Alvaro Muñoz | https://www.youtube.com/watch?v=eDfGpu3iE4Q |
 | 12 | Hacktricks File Upload | https://book.hacktricks.xyz/pentesting-web/file-upload |
+| 13 | PortSwigger Server-Side Template Injection | https://portswigger.net/research/server-side-template-injection |
+| 14 | Friday the 13th: JSON Attacks (Black Hat) | https://www.blackhat.com/docs/us-17/thursday/us-17-Munoz-Friday-The-13th-Json-Attacks.pdf |
 
-
-
+**Dedicated File Upload Resources** (critical for OSWE — many chains end here):
+- Bypass techniques: double extension, content-type spoofing, magic bytes, case sensitivity, null byte (older PHP), .phar, polyglot files
+- Finding writable directories + web root disclosure after upload
+- See advanced-skeleton for upload step patterns and the Roadmap for dedicated practice week
 
 ### Practice Labs
 
@@ -92,10 +117,14 @@ Exam related resources that might be useful
 | Order |  Name | Link |
 |--- | ----- | ---- | 
 | 1 | Proctoring Student Manual | https://help.offensive-security.com/hc/en-us/articles/360050299352-Proctoring-Tool-Student-Manual |
-| 2 | OSWE Exam Guide | https://help.offensive-security.com/hc/en-us/articles/360046869951l |
-| 3 | Offsec Report Tempalte Generator | https://github.com/noraj/OSCP-Exam-Report-Template-Markdown |
+| 2 | OSWE / WEB-300 Exam Guide | https://help.offensive-security.com/hc/en-us/articles/360046869951-WEB-300-Advanced-Web-Attacks-and-Exploitation-OSWE-Exam-Guide |
+| 3 | Offsec Report Template Generator | https://github.com/noraj/OSCP-Exam-Report-Template-Markdown |
 | 4 | oswe review - tips and tricks | https://www.youtube.com/watch?v=ElZ7fFE9Gr4 |
 | 5 | OSWE Review (AWAE Course) | https://stacktrac3.co/oswe-review-awae-course/#Losing_Steam_and_Yolo%E2%80%99ing_It |
+| 6 | Obligatory OSWE Retrospective (2025) | https://notateamserver.xyz/blog/oswe-review/ |
+| 7 | OffSec Web Expert (OSWE) Review (2025) | https://steflan-security.com/offsec-web-expert-oswe-review/ |
+| 8 | WEB-300 OSWE Review (2025) | https://medium.com/@jake.mayhew/web-300-oswe-review-offsec-web-expert-46074fbdb237 |
+| 9 | OffSec AWAE/OSWE Review — 2026 | https://rootshooter.medium.com/offsec-awae-oswe-review-2026-cad3c1e15946 |
 
 
 ### HTB Writeups
@@ -138,16 +167,22 @@ Comprehensive guides for building production-ready exploit scripts for OSWE.
 
 | Order | Name | Link |
 |-------|------|------|
+| 0 | **OSWE Study Roadmap** (start here) | [Roadmap](OSWE-Study-Roadmap.md) |
 | 1 | Building a Reusable OSWE PoC Skeleton | [Guide](Building%20a%20Reusable%20OSWE%20PoC%20Skeleton.md) |
 | 2 | Exploit Writing for OSWE | [Guide](Exploit%20Writing%20for%20OSWE.md) |
 | 3 | Complete PoC Guide | [Guide](COMPLETE-POC-GUIDE.md) |
 | 4 | OSWE PoC Skeleton Guide | [Guide](OSWE-PoC-Skeleton-Guide.md) |
 | 5 | Advanced PoC Skeleton | [Example](poc-examples/advanced-skeleton/) |
+| 6 | File Upload to RCE (new) | [Guide](guides/File-Upload-to-RCE.md) + [PoC](poc-examples/file-upload-rce/) |
+
+**Note on File Upload**: No standalone full PoC yet (see advanced-skeleton/examples and Roadmap Week 6). Study bypass patterns from HackTricks + syllabus examples; implement using the skeleton when practicing.
 
 
 ## Vulnerability Case Studies
 
-Detailed case studies documenting real-world vulnerabilities with exploitation chains.
+Detailed case studies documenting real-world vulnerabilities with exploitation chains. Many have been expanded with environment details, full chains, OSWE tips, and references to the corresponding rich PoC + Notes in `poc-examples/`. Use `notes/CASE-template.md` when adding your own.
+
+See also the [Study Roadmap](OSWE-Study-Roadmap.md) for the recommended order to tackle them.
 
 | Order | Application | Vulnerability Type | Link |
 |-------|-------------|-------------------|------|
@@ -165,6 +200,7 @@ Detailed case studies documenting real-world vulnerabilities with exploitation c
 | 12 | Generic | Second-Order SQL Injection | [Notes](notes/SECOND-ORDER-SQLI.md) |
 | 13 | Generic Flask | SSTI (Jinja2) | [Notes](notes/SSTI-JINJA2-FLASK.md) |
 | 14 | Generic XML Parser | XXE File Read/SSRF | [Notes](notes/XXE-FILE-READ-SSRF.md) |
+| 15 | Generic Web App | File Upload to Webshell RCE | [Notes](notes/FILE-UPLOAD-TO-RCE.md) + [Guide](guides/File-Upload-to-RCE.md) + [PoC](poc-examples/file-upload-rce/) |
 
 
 ## Production-Ready PoC Examples
@@ -217,6 +253,14 @@ Working exploit scripts with documentation organized by vulnerability type.
 | Order | Type | Example | PoC | Notes |
 |-------|------|---------|-----|-------|
 | 1 | XXE | File Read/SSRF | [PoC](poc-examples/xxe-file-read-ssrf/) | [Notes](notes/XXE-FILE-READ-SSRF.md) |
+
+### File Upload to RCE
+
+| Order | Type | Example | PoC | Notes | Guide |
+|-------|------|---------|-----|-------|-------|
+| 1 | Generic | Webshell via weak upload filters (PHP/ASPX/JSP) | [PoC](poc-examples/file-upload-rce/) | [Notes](notes/FILE-UPLOAD-TO-RCE.md) | [Guide](guides/File-Upload-to-RCE.md) |
+
+**Key techniques covered**: double extension, magic bytes, Content-Type bypass, case tricks, null byte (legacy), combined, post-upload discovery, direct execution vs LFI trigger.
 
 
 

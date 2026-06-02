@@ -4,12 +4,13 @@
 
 This repository is a curated set of OSWE preparation notes and resource lists written in Markdown.
 
-- `README.md` is the primary index of learning materials, labs, and writeups.
+- `README.md` is the primary index of learning materials, labs, and writeups (now points to the Roadmap as the recommended starting point).
+- `OSWE-Study-Roadmap.md` is the structured 8-week study plan — the best entry point for learners.
 - `OSWE-Prep-content.md` consolidates broader prep content.
 - `Building a Reusable OSWE PoC Skeleton.md` and `Exploit Writing for OSWE.md` are focused guides.
-- `notes/` contains reusable case study templates; copy `notes/CASE-template.md` when starting a new topic.
+- `notes/` contains reusable case study templates; copy `notes/CASE-template.md` when starting a new topic. Enrich existing case studies when they are too brief to be useful study references.
 
-Add new topics as standalone Markdown files with descriptive titles, and link them from `README.md`.
+Add new topics as standalone Markdown files with descriptive titles, and link them from `README.md`. Update the Roadmap when adding major new study resources.
 
 ## Build, Test, and Development Commands
 

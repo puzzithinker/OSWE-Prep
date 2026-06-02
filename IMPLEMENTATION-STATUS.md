@@ -662,3 +662,52 @@ All completed work follows these standards:
 - **Total**: 50-70 hours of focused work
 
 **Next Steps**: Follow this document's templates and patterns to complete remaining examples. Each new PoC becomes faster as familiarity with patterns increases.
+
+---
+
+## ✨ 2026 Enrichment Pass (Study-Focused Improvements)
+
+**Date**: Current session
+
+**Scope**: Focused on making the repo more effective as a *study system* for OSWE rather than just a collection of PoCs.
+
+### Additions & Major Improvements
+- **New OSWE-Study-Roadmap.md** (comprehensive 8-week plan, prerequisites, topic priority matrix, daily habits, milestones, exam simulation guidance, curated recent reviews). Directly referenced from README and PoC guides.
+- **Expanded case studies** (notes/*.md now substantially richer, 150-300+ lines each for the previously minimal ones):
+  - notes/NODEJS-DESERIALIZATION.md
+  - notes/PHP-OBJECT-INJECTION.md
+  - notes/SSTI-JINJA2-FLASK.md
+  - notes/SECOND-ORDER-SQLI.md
+  - notes/DOTNET-VIEWSTATE-DESERIALIZATION.md
+  - notes/BASSMASTER-1.5.1-JS-INJECTION.md
+  - notes/XXE-FILE-READ-SSRF.md (further detailed)
+  - All now include deeper recon, code patterns, bypasses, OSWE-specific timing tips, manual examples, and cross-links to PoCs + guides.
+- **Enriched guide**: guides/PHP-Deserialization-Patterns.md (nearly doubled in practical content — more gadget examples, PHAR deep dive, code review 30-min workflow, PoC integration, common pitfalls, exam time boxes).
+- **README.md overhaul**:
+  - Prominent "Start Here" table pointing to Roadmap + core methodology docs.
+  - "Core Exam Topics (High Priority)" callout.
+  - Added recent high-quality 2025/2026 OSWE reviews to Exam Resources.
+  - Added explicit File Upload subsection (syllabus-critical).
+  - Better cross-linking and navigation notes.
+- **PoC polish**: Added `stage_verify()` + verification guidance to the lighter Node.js deserialization PoC (poc-examples/nodejs-deserialization/poc.py) for consistency with fuller examples (Java, MSSQL, etc.). Small robustness/doc improvements.
+- **New/updated links**: Recent reviews, additional high-value learning material (PortSwigger SSTI, JSON Attacks paper), explicit File Upload emphasis.
+
+### Verification Performed
+- No new TODO/FIXME introduced in published content (skeleton templates intentionally retain them as guidance).
+- Tables remain consistent `| Order | Name | Link |` format.
+- All new links are to public resources; no credentials or non-public material added.
+- Cross references between Roadmap ↔ README ↔ guides ↔ notes ↔ poc-examples improved.
+
+### Impact for Learners
+- Clear entry point and study sequence (biggest user request addressed).
+- Case studies are now actually useful as quick-reference + deep-dive companions instead of one-pagers.
+- Roadmap tells you *exactly* which PoC/Notes/Guide to use in which week.
+- File Upload gap is now explicitly called out with study pointers (future dedicated PoC still valuable).
+
+**Remaining high-value opportunities** (not completed in this pass):
+- ~~Full dedicated `guides/File-Upload-to-RCE.md` + `poc-examples/file-upload-rce/` (skeleton placeholders exist; high exam relevance).~~ **COMPLETED in this pass** — full ~500+ line PoC, 350+ line Notes.md, 400+ line methodology guide with bypass matrix table, ASCII + Mermaid diagram examples, decision tree cheat sheet, verification one-liners, code review greps, OSWE tips. Added to all indexes + case study table.
+- Bringing the other lighter PoCs (PHP, SSTI, second-order, dotnet, xxe) to full 400-500+ line feature parity with Java/MSSQL (they are usable but less "batteries-included").
+- Further .NET guide expansion (currently one of the shorter ones).
+- More HTB / recent student lab recommendations.
+
+These changes make the repo a more complete self-study package while preserving the existing high-quality PoC and guide work.

