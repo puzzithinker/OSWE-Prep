@@ -660,6 +660,40 @@ grep -rn "prepare.*INSERT\|prepare.*UPDATE" .
 grep -rn "SELECT\|DELETE" . | grep -v "prepare" | grep "\$"
 ```
 
+## Part 7: Source Code Recovery Workflow (White-Box Labs)
+
+When source is not provided (very common in AWAE/OSWE targets):
+
+### .NET Recovery
+1. Locate assemblies (often in `bin/`, `App_Data/`, or installed app folders).
+2. Use **dnSpy** / **ILSpy** (preferred) or `ildasm`.
+3. Search for:
+   - `Deserialize`, `ObjectStateFormatter`, `XmlSerializer`, `JavaScriptSerializer`, `BinaryFormatter`.
+   - Cookie handlers, ViewState usage, `LoadPostData`, custom binders.
+   - Dangerous sinks: `Process.Start`, `File.WriteAll`, SQL concatenation.
+4. Reconstruct call paths back to HTTP entry points (cookies, form fields, headers, query params).
+
+### Java Recovery
+1. Identify the servlet container (Tomcat common). Look for `webapps/ROOT/WEB-INF/`.
+2. Key files:
+   - `web.xml` → servlet mappings, filters, security constraints.
+   - `lib/*.jar` and `classes/` for the app bytecode.
+3. Decompile with **jd-gui**, **jadx**, or `cfr`.
+4. Map URLs → servlets → service methods.
+5. Trace user-controlled data (request params, headers, paths) into dangerous calls:
+   - JDBC `Statement` / string concat.
+   - `Runtime.exec`, file ops, deserialization.
+   - `ObjectInputStream`, `XMLDecoder`, XStream, etc.
+
+### Practical Tips from AWAE Labs
+- Start with servlet/endpoint discovery (`web.xml` or route registration).
+- Decompile only what you need; focus on the feature under test.
+- Rename decompiled variables mentally as you trace (user input → sink).
+- Cross-reference with live Burp traffic (match parameter names to source variables).
+- For deserialization: identify the exact serializer and expected root type.
+
+See the "Core WEB-300 / OSWE Lab Patterns" section in the Study Roadmap and the manageengine / dotnet PoC notes for concrete source recovery + servlet / cookie handler examples.
+
 ## References
 - OWASP Code Review Guide: https://owasp.org/www-project-code-review-guide/
 - CWE Top 25: https://cwe.mitre.org/top25/

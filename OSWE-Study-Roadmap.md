@@ -28,14 +28,14 @@ Before diving deep:
 
 ## Recommended Lab / Practice Sources (in order)
 
-1. **OffSec WEB-300 course labs + Challenge Labs** (primary — do all, script the chains).
+1. **OffSec WEB-300 course labs + Challenge Labs** (primary — do all modules, complete and fully script the 6+ white-box Challenge Labs. These are the closest to exam machines).
 2. **This repo's PoC examples + Notes** (study patterns, reproduce locally where possible).
-3. **PortSwigger Web Security Academy** (free advanced labs for modern context + breadth; pair each with a mini PoC).
-4. **PentesterLab** (selected exercises: SQLi to Shell series, XSS + MySQL FILE, etc.).
-5. **bmdyy student labs** (GitHub repos with OSWE-like whitebox challenges — highly recommended in recent reviews).
-6. **HackTheBox** (machines tagged with relevant vulns: file upload, deserial, SQLi, etc. — see README HTB list and Ippsec videos).
-7. **VulnHub** (SecureCode, dev/random/pipe, etc.).
-8. **Code review practice**: codereviewlab.com, Hacker101 source review, OWASP code review guide.
+3. **PortSwigger Web Security Academy** (free advanced labs for modern context + breadth — SQLi, deserial, SSRF, SSTI, prototype pollution, XXE, file upload, etc.; pair every lab with a mini non-interactive PoC).
+4. **bmdyy GitHub labs** (highly recommended across 2025-2026 reviews): tudo (PHP), testr (Python IDE XSS/code inj), order (blind SQLi ORDER BY), and others. Docker-friendly practice for white-box review + exploitation.
+5. **PentesterLab** (selected exercises: SQLi to Shell series, XSS + MySQL FILE, etc.).
+6. **HackTheBox** (web machines + dedicated playlists for OSWE-style vulns — see README).
+7. **VulnHub** (SecureCode, dev/random/pipe, Potato, etc.).
+8. **Code review practice**: codereviewlab.com, Sonar security code challenges, OWASP Secure Coding Dojo, Secure Code Review challenges on GitHub.
 
 **Docker-friendly targets in this repo** (see individual Notes.md for setup):
 - Many have Docker or simple LAMP/Win VM instructions.
@@ -117,7 +117,7 @@ Before diving deep:
 - Fill gaps: Postgres RCE specifics, more .NET gadgets, advanced WAF bypasses, blind XXE variations, PHAR + file upload combos.
 - Review all PoC code in this repo; refactor one of yours to be cleaner/faster.
 - Light: 1-2 new PortSwigger or PentesterLab + script it.
-- Mental: Exam guide (proctoring, reporting rules, 47h45m + 24h report). Prepare clean Kali + tools + templates.
+- Mental: Exam guide (proctoring, reporting rules, ~48h practical + 24h report). Prepare clean Kali + tools + templates. Recent passers emphasize scripting speed and Obsidian-to-PDF reporting.
 - Final: One full "dry run" on a complex chain you haven't touched.
 
 ---
@@ -134,6 +134,36 @@ Before diving deep:
 8. Supporting: Auth bypasses, LFI to RCE, command injection, business logic abuse.
 
 Expect chains, not isolated vulns.
+
+---
+
+## Core WEB-300 / OSWE Lab Patterns & Practice Targets
+
+The WEB-300 syllabus uses real-world case studies to teach repeatable white-box chains that lead to auth bypass or RCE. These classic patterns remain highly relevant:
+
+| Pattern / Classic Example | Focus Areas | Primary Repo Resources |
+|---------------------------|-------------|------------------------|
+| XSS → privileged abuse → RCE (e.g. Atmail) | Stored/reflected XSS discovery, request minimization, session riding / admin action abuse, file upload RCE | `Atmail-6.4-XSS-RCE-Study.md`, `poc-examples/atmail-xss-rce/`, `notes/ATMAIL-6.4.md` |
+| Blind SQLi → auth bypass + upload RCE (e.g. ATutor) | Response comparison / data exfil, parameterization misuse, file upload filter bypasses (zip traversal etc.) | `notes/ATUTOR-2.2.1-AUTH-RCE.md`, `guides/Advanced-SQLi-Techniques.md` |
+| PHP Type Juggling (e.g. ATutor) | Loose `==` comparisons, magic hashes (0e...), auth token / reset bypasses | `notes/ATUTOR-2.2.1-TYPE-JUGGLING.md`, `poc-examples/atutor-type-juggling/` |
+| Java SQLi → DB RCE (e.g. ManageEngine servlet) | Source recovery (decompile + web.xml servlet maps), blind SQLi bypasses, Postgres large objects / UDF / COPY for shells | `notes/MANAGEENGINE-APPS-MANAGER-SQLI-RCE.md`, `poc-examples/manageengine-sqli/` |
+| Node.js JS Injection (e.g. Bassmaster) | Plugin / prototype issues, arbitrary code exec sinks | `notes/BASSMASTER-1.5.1-JS-INJECTION.md`, `poc-examples/bassmaster-js-injection/` |
+| .NET Deserialization (e.g. DNN cookie) | XmlSerializer gadgets, ObjectDataProvider + ExpandedWrapper, ysoserial.net | `notes/DOTNETNUKE-COOKIE-DESERIALIZATION.md`, `poc-examples/dotnet-viewstate-deserialization/` |
+
+**Workflow for any target or module**:
+- Read source / decompile → map entry points (servlets, routes, handlers) → trace tainted data to sinks.
+- Confirm manually (Burp), then immediately build incremental stages in Python (`requests` + proxy toggle).
+- Reproduce / extend using the advanced skeleton.
+- Update `notes/*.md` (CASE template) and refactor PoC for clarity/logging.
+- Script full non-interactive chains (the exam expects one working script per target that gets the flags).
+
+Additional modern emphasis (from recent passers):
+- Complete and fully automate the official Challenge Labs (multiple white-box + black-box) — these are the closest practice to the exam format.
+- Practice remote debugging and source recovery early.
+- Expect to spend significant time scripting (100-250+ LOC per machine is common).
+- Report as you go (many use Obsidian + export to PDF + official cover).
+
+See also the curated modern reviews in README.md for 2025-2026 experiences and tips.
 
 ---
 
@@ -164,39 +194,43 @@ See individual poc-examples/*/Notes.md for per-vuln tool notes.
 ## Measuring Readiness
 
 - You can stand up a new skeleton PoC for a described vuln in <20 minutes.
-- You have 6-8 solid, documented, working end-to-end PoCs (one per major class).
-- You can perform a 45-min code review pass on a medium app and find the primary vuln + at least one secondary.
-- You have written at least 2 full "exam-style" reports (even if internal).
-- You can explain gadget chain construction, binary search SQLi math, and file upload filter bypasses from memory + demo quickly.
+- You have 6-8+ solid, documented, working end-to-end PoCs (one per major class) and have fully automated several Challenge Lab-style targets.
+- You can perform a 45-min white-box code review pass on a medium app (decompile if needed) and find the primary vuln + at least one secondary + a chaining path.
+- You have written at least 2 full "exam-style" reports (even if internal) using your preferred note-to-PDF workflow.
+- You can explain gadget chain construction, blind SQLi extraction, file upload bypass decision tree, and source-to-sink tracing from memory.
 
 ---
 
 ## Exam Day Tips (from recent passers + this repo)
 
 - Read the latest OSWE Exam Guide (link in README).
-- Report as you go — screenshots, commands, PoC versions in a running doc.
-- Use the PoC skeleton you practiced; don't invent new structure under time pressure.
-- Flags first, beautiful code second (but commented and clean enough to understand).
+- Report as you go — many successful candidates use Obsidian/Markdown notes during the exam then export PDFs (combine with official cover page). Submit flags early.
+- Use the PoC skeleton you practiced; don't invent new structure under time pressure. Include easy proxy toggle for debugging.
+- Expect significant time on scripting (100-250+ lines per target common for full chains). Practice full automation of Challenge Labs.
+- Flags first, beautiful code second (but commented and clean enough to understand). Always revert targets when testing.
 - If stuck >20-30 min on one vector, pivot and come back; multiple paths often exist.
-- Document assumptions and failed attempts briefly (examiners like process).
+- Document assumptions and failed attempts briefly (examiners like process). Take breaks.
+- Remote debugging and decompilation skills pay off — practice them on the course content.
 
 ---
 
 ## Resources Added / Curated (see also README)
 
-Recent high-value reviews (2025-2026):
-- https://notateamserver.xyz/blog/oswe-review/
-- https://steflan-security.com/offsec-web-expert-oswe-review/
-- https://medium.com/@jake.mayhew/web-300-oswe-review-offsec-web-expert-46074fbdb237
-- https://rootshooter.medium.com/offsec-awae-oswe-review-2026-cad3c1e15946
+Recent high-value reviews & guides (2025-2026):
+- The OSWE Guide (2026) — https://www.brunorochamoura.com/posts/oswe-guide/
+- WEB-300 OSWE Review — https://medium.com/@jake.mayhew/web-300-oswe-review-offsec-web-expert-46074fbdb237
+- OffSec OSWE Review (2025) — https://steflan-security.com/offsec-web-expert-oswe-review/
+- OffSec AWAE/OSWE Review 2026 — https://rootshooter.medium.com/offsec-awae-oswe-review-2026-cad3c1e15946
+- Obligatory OSWE Retrospective (2025) — https://notateamserver.xyz/blog/oswe-review/
+- OSWE Certification Ultimate 2026 Guide — https://flashgenius.net/blog-article/oswe-certification-ultimate-2025-guide-to-offsec-web-300
 
 Other frequently praised:
-- bmdyy GitHub labs (search "bmdyy tudo" or "bmdyy testr")
-- https://github.com/wetw0rk/AWAE-PREP and community forks
-- PortSwigger + "script every lab"
-- Code review specific practice sites
+- bmdyy GitHub labs (tudo, testr, order and siblings) — https://github.com/bmdyy
+- PortSwigger Web Security Academy + script every relevant lab
+- Code review practice: codereviewlab.com and Sonar/OWASP challenges
+- Community PoC skeletons and repos (this one, wetw0rk/AWAE-PREP forks, rizemon/exploit-writing-for-oswe)
 
-This roadmap + the rest of the repo (PoCs, guides, case studies) gives you a closed-loop practice system: learn concept → study real PoC → reproduce + modify → apply to new target → document.
+This roadmap + the rest of the repo (PoCs, guides, case studies) gives you a closed-loop practice system: learn concept → study real PoC → reproduce + modify → apply to new target (including modern Challenge Labs) → document.
 
 Good luck — consistent deliberate practice with the white-box + script mindset is what separates passers.
 

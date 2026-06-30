@@ -41,6 +41,11 @@ See the Roadmap for the recommended order and time boxes.
 | 12 | Hacktricks File Upload | https://book.hacktricks.xyz/pentesting-web/file-upload |
 | 13 | PortSwigger Server-Side Template Injection | https://portswigger.net/research/server-side-template-injection |
 | 14 | Friday the 13th: JSON Attacks (Black Hat) | https://www.blackhat.com/docs/us-17/thursday/us-17-Munoz-Friday-The-13th-Json-Attacks.pdf |
+| 15 | WEB-300 OSWE Review (2025) - Jake Mayhew | https://medium.com/@jake.mayhew/web-300-oswe-review-offsec-web-expert-46074fbdb237 |
+| 16 | The OSWE Guide (2026) - BRM | https://www.brunorochamoura.com/posts/oswe-guide/ |
+| 17 | OffSec OSWE Review (2025) - Steflan | https://steflan-security.com/offsec-web-expert-oswe-review/ |
+| 18 | OffSec AWAE/OSWE Review 2026 | https://rootshooter.medium.com/offsec-awae-oswe-review-2026-cad3c1e15946 |
+| 19 | bmdyy OSWE-style Labs (tudo, testr, order, etc.) | https://github.com/bmdyy |
 
 **Dedicated File Upload Resources** (critical for OSWE — many chains end here):
 - Bypass techniques: double extension, content-type spoofing, magic bytes, case sensitivity, null byte (older PHP), .phar, polyglot files
@@ -66,6 +71,8 @@ See the Roadmap for the recommended order and time boxes.
 | 11 | GoSecure - XXE Workshop | Workshop - Free | https://gosecure.github.io/xxe-workshop/ |
 | 12 | Pwnworks | .NET Deserialization Github - Free | https://github.com/abhisek/pwnworks/tree/master/challenges/dotnet-deserialization |
 | 13 | dev/random/pipe | PHP Deserialization VulnHub - Free | https://www.vulnhub.com/entry/devrandom-pipe,124/ |
+| 14 | bmdyy Labs (tudo, testr, order...) | GitHub - OSWE-style whitebox | https://github.com/bmdyy |
+| 15 | Official WEB-300 Challenge Labs | OffSec course (required practice) | Complete all white-box + black-box labs and fully script chains |
 
 
 ### Vulnerability Writeups
@@ -145,9 +152,9 @@ Hackthebox writeups with vulnerabilities and exploitation paths similiar to lab 
 
 
 
-### Pre/Post-AWAE
+### Pre/Post-OSWE Resources
 
-Good resources to learn before starting AWAE or after finishing your OSWE exam
+Good resources to learn before starting WEB-300/OSWE or for supplementary practice after finishing the exam. Many of these complement the core white-box chaining focus.
 
 | Order | Name | Link |
 |--- | ----- | ----- |

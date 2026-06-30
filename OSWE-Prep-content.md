@@ -3,6 +3,15 @@
 An OSWE Guide
 
 
+#### Recent Reviews & Guides (2025-2026)
+
+- https://www.brunorochamoura.com/posts/oswe-guide/
+- https://medium.com/@jake.mayhew/web-300-oswe-review-offsec-web-expert-46074fbdb237
+- https://steflan-security.com/offsec-web-expert-oswe-review/
+- https://rootshooter.medium.com/offsec-awae-oswe-review-2026-cad3c1e15946
+- https://notateamserver.xyz/blog/oswe-review/
+- https://flashgenius.net/blog-article/oswe-certification-ultimate-2025-guide-to-offsec-web-300
+
 #### WriteUps
 
 <https://stacktrac3.co/oswe-review-awae-course/>
