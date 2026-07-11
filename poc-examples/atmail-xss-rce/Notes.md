@@ -1,3 +1,9 @@
+## Docker lab
+
+Preferred setup: `cd labs && ./labctl.sh up` (see [`lab/README.md`](lab/README.md) and [`labs/README.md`](../../labs/README.md)).
+
+---
+
 # Atmail 6.4 XSS to RCE PoC Notes
 
 ## Vulnerability Summary

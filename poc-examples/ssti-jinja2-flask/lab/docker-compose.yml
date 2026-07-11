@@ -1,0 +1,5 @@
+services:
+  ssti:
+    build: .
+    ports:
+      - "8102:5000"

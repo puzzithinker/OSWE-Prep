@@ -9,6 +9,11 @@ This is an OSWE (Offensive Security Web Expert) exam preparation repository cont
 ## Repository Structure
 
 - `README.md` - Primary index of learning materials, practice labs, HTB writeups, and external resources organized by topic (XXE, Java/PHP/.NET deserialization, SQLi, file upload, etc.)
+- `OSWE-Study-Roadmap.md` - 8-week study plan (recommended start)
+- `Exam-Day-Runbook.md`, `Progress-Tracker.md`, `Report-Snippet-Templates.md`, `Speed-Drills.md` - Exam ops and practice tracking
+- `Lab-Setup-Matrix.md` - Skill → lab/PoC pairing
+- `guides/` - Methodology (SQLi, deserial, XSS chains, sinks, decision trees, etc.)
+- `drills/`, `study-log/` - Cold-start scenarios and personal session logs
 - `OSWE-Prep-content.md` - Consolidated preparation content
 - `Building a Reusable OSWE PoC Skeleton.md` - Guide on creating Python PoC scripts using `uv` for project initialization and dependency management
 - `Exploit Writing for OSWE.md` - Focused guide on Python exploit development using the `requests` library, including code snippets and best practices
@@ -17,6 +22,7 @@ This is an OSWE (Offensive Security Web Expert) exam preparation repository cont
 - `notes/` - Case study templates and completed vulnerability analyses
   - `CASE-template.md` - Standardized template for documenting new vulnerability case studies
   - Individual case files (e.g., `ATMAIL-6.4.md`, `ATUTOR-2.2.1-*.md`, `BASSMASTER-1.5.1-*.md`, etc.)
+- `poc-examples/` - Stage-based PoCs with Notes.md lab manuals
 
 ## Common Development Commands
 

@@ -1,0 +1,120 @@
+# Master compose for OSWE teaching labs
+# Usage: ./labctl.sh up
+# Heavy (Java + MSSQL): ./labctl.sh up --profile heavy
+
+name: oswe-labs
+
+services:
+  file-upload:
+    build: ../poc-examples/file-upload-rce/lab
+    ports: ["8101:80"]
+
+  ssti:
+    build: ../poc-examples/ssti-jinja2-flask/lab
+    ports: ["8102:5000"]
+
+  xxe:
+    build: ../poc-examples/xxe-file-read-ssrf/lab
+    ports: ["8103:80"]
+    # Flask app listens on 80 inside container
+
+  node-deserial:
+    build: ../poc-examples/nodejs-deserialization/lab
+    ports: ["8104:3000"]
+
+  bassmaster:
+    build: ../poc-examples/bassmaster-js-injection/lab
+    ports: ["8105:8080"]
+
+  php-poi:
+    build: ../poc-examples/php-object-injection/lab
+    ports: ["8106:80"]
+
+  type-juggling:
+    build: ../poc-examples/atutor-type-juggling/lab
+    ports: ["8107:80"]
+
+  second-order-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: oswe
+      MYSQL_USER: oswe
+      MYSQL_PASSWORD: oswe
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroswe", "-poswe"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  second-order:
+    build: ../poc-examples/second-order-sqli/lab
+    ports: ["8108:80"]
+    environment:
+      DB_HOST: second-order-db
+    depends_on:
+      second-order-db:
+        condition: service_healthy
+
+  xss-chain:
+    build: ../poc-examples/atmail-xss-rce/lab
+    ports: ["8109:80"]
+
+  pg-sqli-db:
+    build:
+      context: ../poc-examples/manageengine-sqli/lab
+      dockerfile: Dockerfile.db
+    environment:
+      POSTGRES_DB: oswe
+      POSTGRES_USER: oswe
+      POSTGRES_PASSWORD: oswe
+    volumes:
+      - pg_export:/export
+    # volume mount hides image /export perms — fix at start
+    entrypoint: ["/bin/sh", "-c", "mkdir -p /export && chmod 777 /export && exec docker-entrypoint.sh postgres"]
+
+  pg-sqli:
+    build: ../poc-examples/manageengine-sqli/lab
+    ports: ["8110:8080"]
+    environment:
+      DB_HOST: pg-sqli-db
+      DB_NAME: oswe
+      DB_USER: oswe
+      DB_PASS: oswe
+    volumes:
+      - pg_export:/app/static
+    depends_on:
+      - pg-sqli-db
+
+  dotnet-json:
+    build: ../poc-examples/dotnet-viewstate-deserialization/lab
+    ports: ["8113:8080"]
+
+  # --- heavy profile ---
+  java-deserial:
+    profiles: ["heavy"]
+    build: ../poc-examples/java-deserialization-commons/lab
+    ports: ["8111:8080"]
+
+  mssql:
+    profiles: ["heavy"]
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Your_strong_Password123"
+      MSSQL_PID: Developer
+    ports: ["1433:1433"]
+
+  mssql-sqli:
+    profiles: ["heavy"]
+    build: ../poc-examples/mssql-sqli-xp-cmdshell/lab
+    ports: ["8112:8080"]
+    environment:
+      DB_HOST: mssql
+      DB_USER: sa
+      DB_PASS: Your_strong_Password123
+    depends_on:
+      - mssql
+
+volumes:
+  pg_export:

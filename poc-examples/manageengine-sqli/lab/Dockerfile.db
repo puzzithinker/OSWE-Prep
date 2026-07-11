@@ -1,0 +1,2 @@
+FROM postgres:15-alpine
+RUN mkdir -p /export && chmod 777 /export

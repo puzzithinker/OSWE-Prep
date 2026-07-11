@@ -3,8 +3,10 @@
 **Curated resources, PoC patterns, case studies, and methodology guides for Offensive Security WEB-300 (OSWE).**
 
 > **New to the repo?** Start with the **[OSWE Study Roadmap](OSWE-Study-Roadmap.md)** — an 8-week structured plan with topic priorities, lab recommendations, daily habits, and milestones mapped to the content here.
+>
+> **Hands-on today?** `cd labs && ./labctl.sh up` — see **[labs/README.md](labs/README.md)**. Full doc map: **[DOCUMENTATION.md](DOCUMENTATION.md)**.
 
-This repo is documentation + production-quality Python PoC examples following consistent skeletons. All content is for authorized labs, CTFs, and OSWE exam preparation only.
+This repo is documentation + production-quality Python PoC examples + Docker teaching labs following consistent skeletons. All content is for authorized labs, CTFs, and OSWE exam preparation only.
 
 ---
 
@@ -13,6 +15,11 @@ This repo is documentation + production-quality Python PoC examples following co
 | Resource | Why It Matters | Link |
 |----------|----------------|------|
 | Study Roadmap | 8-week plan, priorities, how to use everything in this repo | [OSWE-Study-Roadmap.md](OSWE-Study-Roadmap.md) |
+| Progress Tracker | Honest readiness checklist by vuln class | [Progress-Tracker.md](Progress-Tracker.md) |
+| Exam-Day Runbook | Time boxes, pivot rules, pre-exam ops | [Exam-Day-Runbook.md](Exam-Day-Runbook.md) |
+| Lab Setup Matrix | Skill → lab/PoC pairing | [Lab-Setup-Matrix.md](Lab-Setup-Matrix.md) |
+| **Docker Labs** | One-command vulnerable apps for every major class | [labs/README.md](labs/README.md) |
+| Documentation index | Map of all guides, labs, drills, and PoCs | [DOCUMENTATION.md](DOCUMENTATION.md) |
 | PoC Methodology | The reusable skeleton + patterns used in all examples | [Building a Reusable OSWE PoC Skeleton.md](Building%20a%20Reusable%20OSWE%20PoC%20Skeleton.md) |
 | Exploit Writing | Practical `requests` patterns, stages, context objects | [Exploit Writing for OSWE.md](Exploit%20Writing%20for%20OSWE.md) |
 | Complete PoC Guide | Navigation + how the different examples and advanced skeleton fit together | [COMPLETE-POC-GUIDE.md](COMPLETE-POC-GUIDE.md) |
@@ -20,6 +27,37 @@ This repo is documentation + production-quality Python PoC examples following co
 **Core Exam Topics (High Priority)**: SQLi→RCE (all DBs + second-order + blind), Deserialization (Java/.NET/PHP/Node), File Upload bypasses→RCE, XSS→privileged action→RCE, PHP Type Juggling, SSTI, XXE.
 
 See the Roadmap for the recommended order and time boxes.
+
+### Study system (practice + exam ops)
+
+| Resource | Why It Matters | Link |
+|----------|----------------|------|
+| Report snippets | Exam-style Markdown sections | [Report-Snippet-Templates.md](Report-Snippet-Templates.md) |
+| Speed drills | Timed skill builders | [Speed-Drills.md](Speed-Drills.md) |
+| Cold-start drills | Scenario cards without solutions first | [drills/Cold-Start-Drills.md](drills/Cold-Start-Drills.md) |
+| Study log | Session diary + weak areas | [study-log/](study-log/) |
+| Sink cheatsheet | 15-min white-box greps by language | [guides/Dangerous-Sinks-Cheatsheet.md](guides/Dangerous-Sinks-Cheatsheet.md) |
+| Chain decision trees | “I found X → next Y” pivots | [guides/Chain-Decision-Trees.md](guides/Chain-Decision-Trees.md) |
+
+### Methodology guides
+
+| Topic | Guide |
+|-------|-------|
+| Code review checklists | [guides/Code-Review-Checklists.md](guides/Code-Review-Checklists.md) |
+| Advanced SQLi | [guides/Advanced-SQLi-Techniques.md](guides/Advanced-SQLi-Techniques.md) |
+| Blind SQLi automation | [guides/Blind-SQLi-Automation.md](guides/Blind-SQLi-Automation.md) |
+| Postgres SQLi → RCE | [guides/Postgres-SQLi-to-RCE.md](guides/Postgres-SQLi-to-RCE.md) |
+| Java deserialization | [guides/Java-Deserialization-Methodology.md](guides/Java-Deserialization-Methodology.md) |
+| .NET deserialization | [guides/DotNet-Deserialization-Guide.md](guides/DotNet-Deserialization-Guide.md) |
+| PHP deserialization | [guides/PHP-Deserialization-Patterns.md](guides/PHP-Deserialization-Patterns.md) |
+| PHP type juggling | [guides/PHP-Type-Juggling-Methodology.md](guides/PHP-Type-Juggling-Methodology.md) |
+| XSS → RCE chaining | [guides/XSS-to-RCE-Chaining.md](guides/XSS-to-RCE-Chaining.md) |
+| File upload → RCE | [guides/File-Upload-to-RCE.md](guides/File-Upload-to-RCE.md) |
+| LFI → RCE | [guides/LFI-to-RCE.md](guides/LFI-to-RCE.md) |
+| XXE | [guides/XXE-Attack-Vectors.md](guides/XXE-Attack-Vectors.md) |
+| SSTI | [guides/SSTI-Exploitation-Guide.md](guides/SSTI-Exploitation-Guide.md) |
+| Dangerous sinks | [guides/Dangerous-Sinks-Cheatsheet.md](guides/Dangerous-Sinks-Cheatsheet.md) |
+| Chain trees | [guides/Chain-Decision-Trees.md](guides/Chain-Decision-Trees.md) |
 
 ---
 
@@ -180,9 +218,11 @@ Comprehensive guides for building production-ready exploit scripts for OSWE.
 | 3 | Complete PoC Guide | [Guide](COMPLETE-POC-GUIDE.md) |
 | 4 | OSWE PoC Skeleton Guide | [Guide](OSWE-PoC-Skeleton-Guide.md) |
 | 5 | Advanced PoC Skeleton | [Example](poc-examples/advanced-skeleton/) |
-| 6 | File Upload to RCE (new) | [Guide](guides/File-Upload-to-RCE.md) + [PoC](poc-examples/file-upload-rce/) |
+| 6 | File Upload to RCE | [Guide](guides/File-Upload-to-RCE.md) + [PoC](poc-examples/file-upload-rce/) |
+| 7 | Exam-Day Runbook | [Exam-Day-Runbook.md](Exam-Day-Runbook.md) |
+| 8 | Report Snippet Templates | [Report-Snippet-Templates.md](Report-Snippet-Templates.md) |
 
-**Note on File Upload**: No standalone full PoC yet (see advanced-skeleton/examples and Roadmap Week 6). Study bypass patterns from HackTricks + syllabus examples; implement using the skeleton when practicing.
+**File upload**: Full guide + stage-based PoC live under `guides/File-Upload-to-RCE.md` and `poc-examples/file-upload-rce/`.
 
 
 ## Vulnerability Case Studies
@@ -193,7 +233,7 @@ See also the [Study Roadmap](OSWE-Study-Roadmap.md) for the recommended order to
 
 | Order | Application | Vulnerability Type | Link |
 |-------|-------------|-------------------|------|
-| 1 | Atmail 6.4 | XSS to RCE | [Study](Atmail-6.4-XSS-RCE-Study.md) |
+| 1 | Atmail 6.4 | XSS to RCE | [Study](Atmail-6.4-XSS-RCE-Study.md) + [Case](notes/ATMAIL-6.4.md) |
 | 2 | ATutor 2.2.1 | Type Juggling | [Notes](notes/ATUTOR-2.2.1-TYPE-JUGGLING.md) |
 | 3 | ATutor 2.2.1 | Authentication Bypass to RCE | [Notes](notes/ATUTOR-2.2.1-AUTH-RCE.md) |
 | 4 | Bassmaster 1.5.1 | JavaScript Injection | [Notes](notes/BASSMASTER-1.5.1-JS-INJECTION.md) |
@@ -247,7 +287,7 @@ Working exploit scripts with documentation organized by vulnerability type.
 |-------|------|---------|-----|-------|
 | 1 | MSSQL | xp_cmdshell RCE | [PoC](poc-examples/mssql-sqli-xp-cmdshell/) | [Notes](notes/MSSQL-SQLI-XP-CMDSHELL.md) |
 | 2 | MySQL | Second-Order SQLi | [PoC](poc-examples/second-order-sqli/) | [Notes](notes/SECOND-ORDER-SQLI.md) |
-| 3 | MySQL | ManageEngine Apps Manager | [PoC](poc-examples/manageengine-sqli/) | [Notes](notes/MANAGEENGINE-APPS-MANAGER-SQLI-RCE.md) |
+| 3 | PostgreSQL (ManageEngine-class) | Apps Manager SQLi → RCE | [PoC](poc-examples/manageengine-sqli/) | [Notes](notes/MANAGEENGINE-APPS-MANAGER-SQLI-RCE.md) |
 
 ### Template Injection
 
@@ -269,6 +309,13 @@ Working exploit scripts with documentation organized by vulnerability type.
 
 **Key techniques covered**: double extension, magic bytes, Content-Type bypass, case tricks, null byte (legacy), combined, post-upload discovery, direct execution vs LFI trigger.
 
+### PoC lab manuals (Notes.md)
 
+High-depth manuals now include Java Commons, MSSQL, Atmail, ManageEngine, PHP POI, ATutor, Bassmaster, **Node deserial**, **.NET ViewState**, **XXE**, file upload, SSTI, and second-order SQLi. Prefer these over thin case shells when practicing hands-on.
 
+---
+
+## Security
+
+Authorized security testing, CTF challenges, and OSWE exam preparation only. Do not include credentials, lab access tokens, or links to non-public resources.
 

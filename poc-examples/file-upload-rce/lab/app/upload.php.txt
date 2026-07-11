@@ -1,0 +1,5 @@
+<?php
+// Teaching copy of upload.php (see upload.php)
+// Blacklist only blocks pure *.php single extension.
+// Double extension shell.php.jpg may still be interpreted depending on Apache config.
+// This lab enables .php.* via AddType in .htaccess for teaching double-ext.

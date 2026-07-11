@@ -1,0 +1,5 @@
+services:
+  file-upload:
+    build: .
+    ports:
+      - "8101:80"

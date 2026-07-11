@@ -1,0 +1,28 @@
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    environment:
+      POSTGRES_DB: oswe
+      POSTGRES_USER: oswe
+      POSTGRES_PASSWORD: oswe
+    volumes:
+      - export_data:/export
+    entrypoint: ["/bin/sh", "-c", "mkdir -p /export && chmod 777 /export && exec docker-entrypoint.sh postgres"]
+  pg-sqli:
+    build: .
+    ports:
+      - "8110:8080"
+    environment:
+      DB_HOST: db
+      DB_NAME: oswe
+      DB_USER: oswe
+      DB_PASS: oswe
+    volumes:
+      - export_data:/app/static
+    depends_on:
+      - db
+
+volumes:
+  export_data:

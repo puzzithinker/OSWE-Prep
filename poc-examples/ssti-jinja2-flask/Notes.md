@@ -1,3 +1,9 @@
+## Docker lab
+
+Preferred setup: `cd labs && ./labctl.sh up` (see [`lab/README.md`](lab/README.md) and [`labs/README.md`](../../labs/README.md)).
+
+---
+
 # SSTI Jinja2 RCE PoC Notes
 
 ## Vulnerability Summary

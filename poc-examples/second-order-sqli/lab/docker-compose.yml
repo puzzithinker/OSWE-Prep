@@ -1,0 +1,22 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: oswe
+      MYSQL_USER: oswe
+      MYSQL_PASSWORD: oswe
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroswe", "-poswe"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  second-order:
+    build: .
+    ports:
+      - "8108:80"
+    environment:
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy

@@ -1,0 +1,6 @@
+Options +Indexes
+# Teaching: execute PHP even with trailing junk extensions
+<FilesMatch "\.php\.">
+    SetHandler application/x-httpd-php
+</FilesMatch>
+AddType application/x-httpd-php .php .phtml .php5

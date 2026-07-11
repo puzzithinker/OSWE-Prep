@@ -1,0 +1,5 @@
+services:
+  xxe:
+    build: .
+    ports:
+      - "8103:80"

@@ -1,0 +1,8 @@
+{
+  "name": "oswe-lab-node-deserial",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "node-serialize": "0.0.4"
+  }
+}

@@ -1,0 +1,5 @@
+services:
+  node-deserial:
+    build: .
+    ports:
+      - "8104:3000"

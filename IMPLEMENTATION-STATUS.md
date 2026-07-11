@@ -1,7 +1,22 @@
 # OSWE-Prep Repository Expansion - Implementation Status
 
-**Date**: 2026-06-30 (enriched with generalized classic lab patterns + modern 2025-2026 OSWE resources)
-**Status**: Phase 1 Complete (Foundation + 2 Priority PoCs) - Remaining work documented below
+**Date**: 2026-07-11 (study system pack: exam ops, enriched classic cases, methodology guides, drills)
+**Status**: Study-aid expansion complete (docs/practice systems). Earlier Phase 1 PoC foundation still applies below.
+
+## 2026-07-11 study pack (summary)
+
+| Area | Deliverables |
+|------|----------------|
+| Exam ops | `Exam-Day-Runbook.md`, `Progress-Tracker.md`, `Report-Snippet-Templates.md`, `Speed-Drills.md` |
+| Classic cases enriched | ATutor type juggling + auth/RCE, Atmail, ManageEngine, DNN cookie |
+| PoC Notes expanded | Node deserial, .NET ViewState, XXE lab manuals |
+| Guides | Type juggling, XSS→RCE, Postgres SQLi→RCE, Blind SQLi, LFI, sinks cheatsheet, chain trees; .NET guide expanded + renamed `guides/DotNet-Deserialization-Guide.md` |
+| Practice systems | `drills/Cold-Start-Drills.md`, `study-log/`, `Lab-Setup-Matrix.md` |
+| Indexes | README Start Here + methodology table; Roadmap weeks linked; AGENTS.md |
+
+---
+
+**Prior status note**: Phase 1 Complete (Foundation + 2 Priority PoCs) - Remaining work documented below
 
 ---
 
@@ -209,7 +224,7 @@ All links properly formatted with relative paths to poc-examples/ and guides/ di
    - Machine key exploitation
 
 3. **Case study**: `notes/DOTNET-VIEWSTATE-DESERIALIZATION.md`
-4. **Methodology guide**: `guides/.NET-Deserialization-Guide.md`
+4. **Methodology guide**: `guides/DotNet-Deserialization-Guide.md`
    - ViewState decoding process
    - ysoserial.net gadget chains
    - Code review patterns (BinaryFormatter, ObjectStateFormatter)

@@ -1,0 +1,5 @@
+services:
+  bassmaster:
+    build: .
+    ports:
+      - "8105:8080"

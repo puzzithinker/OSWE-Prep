@@ -52,10 +52,10 @@ pip3 install requests urllib3
 ```
 
 ### Lab Environment
-- VirtualBox or VMware for vulnerable VMs
-- Kali Linux or Parrot OS for attacking machine
-- Burp Suite for HTTP debugging
-- Network connectivity between attacker and target
+- **Docker (recommended)**: from repo root, `cd labs && ./labctl.sh up` — see [labs/README.md](../labs/README.md)
+- Each example has `lab/` with Dockerfile + compose + teaching app
+- VirtualBox/VMware still useful for full vendor apps (real ATutor/Atmail/Windows MSSQL)
+- Kali/Parrot attacker + Burp Suite for debugging
 
 ## Example Summaries
 
@@ -479,14 +479,36 @@ Educational use only. See main repository license.
 
 ---
 
+## Docker ports (teaching labs)
+
+| Port | Lab | Service name |
+|------|-----|--------------|
+| 8101 | File upload | `file-upload` |
+| 8102 | SSTI Jinja2 | `ssti` |
+| 8103 | XXE | `xxe` |
+| 8104 | Node deserial | `node-deserial` |
+| 8105 | Bassmaster-style | `bassmaster` |
+| 8106 | PHP object injection | `php-poi` |
+| 8107 | Type juggling | `type-juggling` |
+| 8108 | Second-order SQLi | `second-order` |
+| 8109 | XSS chain | `xss-chain` |
+| 8110 | Postgres SQLi | `pg-sqli` |
+| 8111 | Java deserial | `java-deserial` (profile heavy) |
+| 8112 | MSSQL SQLi | `mssql-sqli` (profile heavy) |
+| 8113 | .NET JSON deserial | `dotnet-json` |
+
+```bash
+cd ../labs && ./labctl.sh up
+```
+
 ## Quick Start Checklist
 
 - [ ] Install Python 3.8+
 - [ ] Install requests library
-- [ ] Set up lab environment
-- [ ] Read vulnerability-specific Notes.md
+- [ ] `cd labs && ./labctl.sh up` (or vendor VM)
+- [ ] Read vulnerability-specific Notes.md + `lab/README.md`
 - [ ] Configure Burp Suite
-- [ ] Test network connectivity
+- [ ] Test network connectivity (`./labctl.sh smoke`)
 - [ ] Run PoC with --help flag
 - [ ] Execute exploit
 - [ ] Document findings

@@ -66,7 +66,7 @@ Many older apps (and some misconfigured newer ones) ship with or leak these.
 
 ysoserial.net `ObjectDataProvider` chain is the go-to for ViewState because it can invoke methods (including `Process.Start` or `cmd.exe /c ...`) via XAML / data binding abuse without needing many supporting assemblies.
 
-See `guides/.NET-Deserialization-Guide.md` and the poc Notes for exact ysoserial.net invocation.
+See `guides/DotNet-Deserialization-Guide.md` and the poc Notes for exact ysoserial.net invocation.
 
 ### Other .NET Deserial Vectors (Related)
 
@@ -100,7 +100,7 @@ For direct formatters: use `BinaryFormatter` only with a custom `SerializationBi
 
 - ysoserial.net: https://github.com/pwntester/ysoserial.net
 - Black Hat "Friday the 13th: JSON Attacks" (Alvaro Muñoz & Oleksandr Mirosh)
-- `guides/.NET-Deserialization-Guide.md` (detailed ViewState + formatter guidance)
+- `guides/DotNet-Deserialization-Guide.md` (detailed ViewState + formatter guidance)
 - `poc-examples/dotnet-viewstate-deserialization/` (PoC + Notes)
 - `notes/DOTNETNUKE-COOKIE-DESERIALIZATION.md` (sister vulnerability using cookies)
 - DotNetNuke advisory for CVE-2017-9822

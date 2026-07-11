@@ -1,0 +1,5 @@
+services:
+  xss-chain:
+    build: .
+    ports:
+      - "8109:80"

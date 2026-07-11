@@ -1,0 +1,5 @@
+services:
+  type-juggling:
+    build: .
+    ports:
+      - "8107:80"

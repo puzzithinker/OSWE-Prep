@@ -1,0 +1,5 @@
+services:
+  dotnet-json:
+    build: .
+    ports:
+      - "8113:8080"
