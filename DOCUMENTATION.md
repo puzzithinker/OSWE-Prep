@@ -8,8 +8,10 @@ How to navigate this OSWE preparation repository.
 
 1. **[OSWE-Study-Roadmap.md](OSWE-Study-Roadmap.md)** — 8-week plan and priorities  
 2. **[labs/README.md](labs/README.md)** — `./labctl.sh up` Docker teaching labs  
-3. **[Progress-Tracker.md](Progress-Tracker.md)** — track readiness by vuln class  
-4. **[Lab-Setup-Matrix.md](Lab-Setup-Matrix.md)** — skill → lab port → guide/PoC  
+3. **[Challenge-Lab-Playbook.md](Challenge-Lab-Playbook.md)** — official Challenge Lab / exam two-flag method  
+4. **[Progress-Tracker.md](Progress-Tracker.md)** — track readiness by vuln class  
+5. **[Lab-Setup-Matrix.md](Lab-Setup-Matrix.md)** — skill → lab port → guide/PoC  
+6. **[snippets/](snippets/)** — reusable PoC fragments (build offline; no LLM on exam)
 
 ---
 
@@ -22,8 +24,13 @@ How to navigate this OSWE preparation repository.
 | [Speed-Drills.md](Speed-Drills.md) | Timed skill drills |
 | [drills/Cold-Start-Drills.md](drills/Cold-Start-Drills.md) | Scenario cards without solutions first |
 | [study-log/](study-log/) | Session diary and weak areas |
-| [Exam-Day-Runbook.md](Exam-Day-Runbook.md) | Exam time boxes and pivot rules |
+| [Exam-Day-Runbook.md](Exam-Day-Runbook.md) | Exam time boxes, scoring, non-interactive PoCs |
+| [Challenge-Lab-Playbook.md](Challenge-Lab-Playbook.md) | Black-box first, 1st/2nd flag, automation |
 | [Report-Snippet-Templates.md](Report-Snippet-Templates.md) | Report section templates |
+| [Reporting-Tooling.md](Reporting-Tooling.md) | Sysreptor / Markdown report workflow |
+| [PortSwigger-Lab-Tracker.md](PortSwigger-Lab-Tracker.md) | Academy + script checklist |
+| [bmdyy-Labs.md](bmdyy-Labs.md) | Free white-box community labs |
+| [snippets/](snippets/) | CSRF, blind SQLi, upload, WS helpers |
 
 ---
 
@@ -34,6 +41,11 @@ How to navigate this OSWE preparation repository.
 | [Code-Review-Checklists.md](guides/Code-Review-Checklists.md) | White-box review |
 | [Dangerous-Sinks-Cheatsheet.md](guides/Dangerous-Sinks-Cheatsheet.md) | First-pass greps by language |
 | [Chain-Decision-Trees.md](guides/Chain-Decision-Trees.md) | “I found X → next Y” |
+| [Remote-Debugging-and-Decompilation.md](guides/Remote-Debugging-and-Decompilation.md) | jadx/dnSpy/attach without lab IDE |
+| [Prototype-Pollution-Methodology.md](guides/Prototype-Pollution-Methodology.md) | Server-side PP → impact |
+| [SSRF-Chaining.md](guides/SSRF-Chaining.md) | SSRF → internal impact |
+| [Weak-Token-and-RNG.md](guides/Weak-Token-and-RNG.md) | Predictable reset/OTP |
+| [WebSocket-Attack-Patterns.md](guides/WebSocket-Attack-Patterns.md) | WS sinks and PoCs |
 | [Advanced-SQLi-Techniques.md](guides/Advanced-SQLi-Techniques.md) | SQLi → RCE |
 | [Blind-SQLi-Automation.md](guides/Blind-SQLi-Automation.md) | Boolean/time extractors |
 | [Postgres-SQLi-to-RCE.md](guides/Postgres-SQLi-to-RCE.md) | Postgres-specific paths |

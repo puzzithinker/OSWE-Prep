@@ -148,17 +148,32 @@ CMDi
 
 ---
 
-## 10. “I have nothing yet” (first 20 min)
+## 10. Prototype pollution (Node / JS merge)
+
+```text
+User JSON merged into object
+  → pollute __proto__ / constructor.prototype
+  → find consumer (auth flag, template opts, exec opts)
+  → 1st-flag class (priv) or 2nd-flag class (RCE)
+```
+
+See `guides/Prototype-Pollution-Methodology.md`.
+
+---
+
+## 11. “I have nothing yet” (first 20 min)
 
 ```text
 Stack fingerprint
   → Dangerous-Sinks-Cheatsheet greps
   → Auth surface map
-  → File upload / XML / serialize / SQL params
+  → File upload / XML / serialize / SQL params / WS / merge
   → Pick highest reachability sink
   → Manual confirm
   → Enter tree above
 ```
+
+For Challenge Lab phase priorities (1st vs 2nd flag): `Challenge-Lab-Playbook.md`.
 
 ---
 

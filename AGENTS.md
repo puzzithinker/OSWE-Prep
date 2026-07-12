@@ -6,8 +6,8 @@ This repository is a curated set of OSWE preparation notes and resource lists wr
 
 - `README.md` is the primary index of learning materials, labs, and writeups (points to the Roadmap as the recommended starting point).
 - `OSWE-Study-Roadmap.md` is the structured 8-week study plan — the best entry point for learners.
-- Exam ops: `Exam-Day-Runbook.md`, `Progress-Tracker.md`, `Report-Snippet-Templates.md`, `Speed-Drills.md`.
-- Practice systems: `drills/`, `study-log/`, `Lab-Setup-Matrix.md`.
+- Exam ops: `Exam-Day-Runbook.md`, `Challenge-Lab-Playbook.md`, `Progress-Tracker.md`, `Report-Snippet-Templates.md`, `Reporting-Tooling.md`, `Speed-Drills.md`.
+- Practice systems: `drills/`, `study-log/`, `Lab-Setup-Matrix.md`, `PortSwigger-Lab-Tracker.md`, `bmdyy-Labs.md`, `snippets/`.
 - **Docker labs**: `labs/` (`./labctl.sh up`) — teaching apps under each `poc-examples/*/lab/`.
 - `guides/` holds methodology (SQLi, deserial, XSS chains, sinks, decision trees, etc.).
 - `notes/` case studies; copy `notes/CASE-template.md` for new topics. Prefer enriching thin cases over new empty shells.

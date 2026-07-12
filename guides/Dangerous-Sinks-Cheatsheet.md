@@ -86,6 +86,8 @@ rg -n "BinaryFormatter|LosFormatter|ObjectStateFormatter|TypeNameHandling|Proces
 | `vm.runInThisContext` / weak sandbox | Escape | Bassmaster-class |
 | `child_process.exec` + user input | CMDi | Injection |
 | `res.render` user-controlled template | SSTI | Engine-specific |
+| `merge` / `extend` / `__proto__` of user JSON | Prototype pollution | Consumer → RCE/auth |
+| `WebSocket` / `socket.io` handlers | CMDi/SQLi/IDOR | Message schema |
 | Mongo `$where` / injection | NoSQLi | Auth bypass |
 | `innerHTML` in server-rendered only | XSS | If SSR |
 
@@ -190,4 +192,8 @@ See `guides/File-Upload-to-RCE.md`.
 | Upload | `guides/File-Upload-to-RCE.md` |
 | XSS chain | `guides/XSS-to-RCE-Chaining.md` |
 | LFI | `guides/LFI-to-RCE.md` |
+| Prototype pollution | `guides/Prototype-Pollution-Methodology.md` |
+| SSRF | `guides/SSRF-Chaining.md` |
+| Weak tokens / RNG | `guides/Weak-Token-and-RNG.md` |
+| WebSockets | `guides/WebSocket-Attack-Patterns.md` |
 | Node | node + bassmaster PoCs |

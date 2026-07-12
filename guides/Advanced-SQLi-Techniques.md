@@ -1,4 +1,22 @@
-# Advanced SQL Injection Techniques Guide
+# Advanced SQL Injection Techniques
+
+## Lab tip: enable DB query logging (prep / debug VM)
+
+When crafting injections, turn on server-side query logs so you see the **exact** SQL executed (syntax, quotes, comments):
+
+```sql
+-- MySQL (lab)
+SET GLOBAL general_log = 'ON';
+SET GLOBAL log_output = 'TABLE';  -- or FILE
+-- SELECT * FROM mysql.general_log ORDER BY event_time DESC LIMIT 20;
+
+-- PostgreSQL (lab): log_statement = 'all' in config or
+-- ALTER SYSTEM / session settings per your version; read log file path from docs
+```
+
+Disable when done. Prefer debug VM. Pair with [Blind-SQLi-Automation.md](Blind-SQLi-Automation.md).
+
+---
 
 ## Overview
 Advanced SQLi goes beyond basic data extraction to achieve Remote Code Execution, second-order injection, and sophisticated data exfiltration. This guide focuses on OSWE-level techniques for escalating SQLi to full system compromise.

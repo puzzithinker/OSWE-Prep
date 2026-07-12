@@ -62,8 +62,9 @@ These are **teaching clones** of the vuln class (not full vendor products). Use 
 | Resource | Trains | Script it? | Link / notes |
 |----------|--------|------------|--------------|
 | OffSec WEB-300 Challenge Labs | Full exam-like chains | **Required** | Course access |
-| bmdyy labs (tudo, testr, order, …) | White-box PHP/Python/SQLi | Yes | https://github.com/bmdyy |
-| PortSwigger Academy | Breadth + modern variants | Mini-PoCs | https://portswigger.net/web-security |
+| bmdyy labs (tudo, testr, order, …) | White-box PHP/Python/SQLi | Yes | [bmdyy-Labs.md](bmdyy-Labs.md) · https://github.com/bmdyy |
+| PortSwigger Academy | Breadth + modern variants | Mini-PoCs | [PortSwigger-Lab-Tracker.md](PortSwigger-Lab-Tracker.md) |
+| Official WEB-300 Challenge Labs | Exam-format white-box | **Required** if enrolled | [Challenge-Lab-Playbook.md](Challenge-Lab-Playbook.md) |
 | PentesterLab SQLi to Shell | MySQL/Postgres file/RCE | Yes | README Practice Labs |
 | GoSecure SSTI workshop | Template injection | Yes | README |
 | GoSecure XXE workshop | XXE | Yes | README |
@@ -95,6 +96,10 @@ cd labs && ./labctl.sh up && ./labctl.sh smoke
 
 | If weak in… | Start here |
 |-------------|------------|
+| Challenge Lab method / two flags | `Challenge-Lab-Playbook.md` |
+| Snippet speed | `snippets/` + re-script one old lab |
+| Prototype pollution | PortSwigger PP + `guides/Prototype-Pollution-Methodology.md` |
+| Debugger / decompile | `guides/Remote-Debugging-and-Decompilation.md` |
 | PoC skeleton | `poc-examples/advanced-skeleton/` + Week 1 roadmap |
 | Blind SQLi | PortSwigger blind labs → `guides/Blind-SQLi-Automation.md` → second-order PoC |
 | MSSQL RCE | `poc-examples/mssql-sqli-xp-cmdshell/` |

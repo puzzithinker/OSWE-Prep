@@ -55,7 +55,14 @@ Rate each: **N** = not started · **R** = read only · **M** = manual only · **
 | SSTI (Jinja/Twig-class) | | ☐ | ☐ | ☐ | ☐ | `poc-examples/ssti-jinja2-flask/` |
 | XXE file read / OOB / SSRF | | ☐ | ☐ | ☐ | ☐ | `poc-examples/xxe-file-read-ssrf/` |
 | LFI → RCE | | ☐ | ☐ | ☐ | ☐ | `guides/LFI-to-RCE.md` |
+| Prototype pollution | | ☐ | ☐ | ☐ | ☐ | `guides/Prototype-Pollution-Methodology.md` |
+| SSRF chaining | | ☐ | ☐ | ☐ | ☐ | `guides/SSRF-Chaining.md` |
+| Weak tokens / RNG | | ☐ | ☐ | ☐ | ☐ | `guides/Weak-Token-and-RNG.md` |
+| WebSocket attacks | | ☐ | ☐ | ☐ | ☐ | `guides/WebSocket-Attack-Patterns.md` |
+| Remote debug / decompile | | ☐ | — | ☐ | ☐ | `guides/Remote-Debugging-and-Decompilation.md` |
 | Code review first pass (45 min) | | ☐ | — | ☐ | ☐ | `guides/Code-Review-Checklists.md` |
+| Challenge Lab methodology | | ☐ | ☐ | ☐ | ☐ | `Challenge-Lab-Playbook.md` |
+| Snippet library maintained | | ☐ | — | — | ☐ | `snippets/` |
 
 **Target before booking exam**: all high-priority rows at **S** or **C**; at least 6 at **C**.
 

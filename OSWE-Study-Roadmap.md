@@ -24,7 +24,8 @@ Before diving deep:
 
 **Quick self-check**: Can you write a 50-line Python script that logs into a form, extracts a token, and submits an authenticated request with Burp proxy support? If not, spend 1 week on Exploit Writing for OSWE.md + PortSwigger labs first.
 
-**Track yourself**: Copy habits into [Progress-Tracker.md](Progress-Tracker.md) and log sessions under [study-log/](study-log/). For exam week ops, use [Exam-Day-Runbook.md](Exam-Day-Runbook.md).
+**Track yourself**: [Progress-Tracker.md](Progress-Tracker.md) · [study-log/](study-log/) · [PortSwigger-Lab-Tracker.md](PortSwigger-Lab-Tracker.md).  
+**Exam ops**: [Exam-Day-Runbook.md](Exam-Day-Runbook.md) · [Challenge-Lab-Playbook.md](Challenge-Lab-Playbook.md) · [snippets/](snippets/).
 
 ---
 
@@ -118,14 +119,15 @@ Each PoC has `poc-examples/*/lab/` with Dockerfile + compose.
 **Milestone**: File upload bypass matrix (8+ techniques) + end-to-end RCE PoC; full Atmail-style multi-stage script.
 
 ### Week 7: Code Review Mastery + Integration + Exam Simulation
-- Deep: `guides/Code-Review-Checklists.md` (full), `guides/Dangerous-Sinks-Cheatsheet.md`, OWASP Code Review Guide.
-- Revisit all previous weeks' source patterns. Practice 30-45 min "first pass" code reviews on new targets.
-- Full chains: Pick 2-3 machines from bmdyy / HTB / VulnHub; treat as mini-exam (time-boxed, full PoC + notes in CASE-template format). Use `guides/Chain-Decision-Trees.md` when stuck.
-- Reporting: `Report-Snippet-Templates.md` + OffSec-style cover from README links. "Report as you go".
-- Speed drills: `Speed-Drills.md` full set; Cold-Start Card I (3h mock slice).
-- Ops: Internalize `Exam-Day-Runbook.md` time model.
+- Deep: `Challenge-Lab-Playbook.md` (master), `guides/Code-Review-Checklists.md`, `guides/Remote-Debugging-and-Decompilation.md`, sinks cheatsheet.
+- Modern gaps: `guides/Prototype-Pollution-Methodology.md`, `guides/SSRF-Chaining.md`, `guides/Weak-Token-and-RNG.md`, `guides/WebSocket-Attack-Patterns.md`.
+- Full chains: Official Challenge Labs (if enrolled) + bmdyy (`bmdyy-Labs.md`) + HTB/VulnHub; mini-exam time boxes; full PoCs.
+- Snippets: harvest every repeated helper into `snippets/`.
+- Reporting: `Reporting-Tooling.md` + `Report-Snippet-Templates.md`; report after each flag.
+- Speed drills: `Speed-Drills.md`; Cold-Start Card I.
+- Ops: `Exam-Day-Runbook.md` scoring + non-interactive rules.
 
-**Milestone**: Complete 2 simulated "exam machines" (source provided or whitebox) end-to-end with PoC + report snippet in <4 hours each.
+**Milestone**: Complete 2 simulated "exam machines" end-to-end with PoC + report snippet in <4 hours each; snippet library feels complete.
 
 ### Week 8: Polish, Gaps, Full Review + Light Practice
 - Re-read weak areas from `study-log/weak-areas.md` and `Progress-Tracker.md`.

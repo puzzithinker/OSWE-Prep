@@ -1,35 +1,65 @@
 # Exam-Day Runbook (WEB-300 / OSWE)
 
-Practical ops checklist for the ~48h practical + 24h report window. Use with your PoC skeleton and `Report-Snippet-Templates.md`.
+Practical ops checklist for the ~48h practical + 24h report window. Use with your PoC skeleton, `snippets/`, `Challenge-Lab-Playbook.md`, and `Report-Snippet-Templates.md`.
 
-**Not official OffSec policy** — always re-read the current [OSWE Exam Guide](https://help.offensive-security.com/hc/en-us/articles/360046869951-WEB-300-Advanced-Web-Attacks-and-Exploitation-OSWE-Exam-Guide) before sitting.
+**Not official OffSec policy** — always re-read the current [OSWE Exam Guide](https://help.offsec.com/hc/en-us/articles/360046869951-WEB-300-Advanced-Web-Attacks-and-Exploitation-OSWE-Exam-Guide) before sitting.
+
+---
+
+## Scoring & structure (verify in live guide)
+
+Typical public description (confirm for your sitting):
+
+| Item | Typical |
+|------|---------|
+| Practical length | ~47h 45m |
+| Report window | ~24h after practical |
+| Targets | Two web applications, white-box |
+| Flags | Two per app (priv esc / in-app high priv + OS impact) |
+| Pass mark | Often cited **85** points — **very little margin** |
+| PoC rule | **Single non-interactive script** per machine (or as guide states); grader must not click for you |
+
+**Planning implication**: treat both **first flags as mandatory**; you can often afford to miss **at most one** second flag — aim for all four.
+
+---
+
+## Hard constraints (2025–2026 passers + guide themes)
+
+- [ ] **No AI / LLM assistance** during the exam — snippets must already exist in *your* library  
+- [ ] PoC runs **without user interaction** mid-script  
+- [ ] Listeners / `python -m http.server` may be started **before** the script (confirm guide)  
+- [ ] Final validation: run PoCs on exam Kali after **reverting** targets  
+- [ ] Remove Burp proxy from final script args  
+- [ ] Parameterise IPs/ports — no hard-coded lab values  
 
 ---
 
 ## Pre-exam (T-24h to T-0)
 
 ### Environment
-- [ ] Fresh Kali (or known-good snapshot) with tools installed
-- [ ] Burp Suite Pro licensed and proxy working
-- [ ] Python 3.10+, `uv` or venv, `requests`/`httpx`
-- [ ] jd-gui / jadx, dnSpy or ILSpy, VSCode/Cursor
-- [ ] ysoserial + ysoserial.net on PATH or in a known folder
-- [ ] netcat, nmap, curl, git, markdown→PDF path tested
-- [ ] PoC skeleton template ready to copy (`poc-examples/advanced-skeleton/`)
-- [ ] Reverse shell listeners: bash, PowerShell one-liners bookmarked
-- [ ] Time sync correct; proctoring tool tested if required
+- [ ] Fresh Kali (or known-good snapshot) with tools installed  
+- [ ] **Proctoring + webcam + mic tested the day before** (hardware fails burn time)  
+- [ ] Burp Suite Pro licensed and proxy working  
+- [ ] Python 3.10+, `uv` or venv, `requests`/`httpx`, `websocket-client` if needed  
+- [ ] jd-gui / jadx, dnSpy or ILSpy, VSCode  
+- [ ] ysoserial + ysoserial.net on PATH or in a known folder  
+- [ ] netcat, nmap, curl, git, markdown→PDF (or Sysreptor practice workflow) tested  
+- [ ] PoC skeleton + **`snippets/`** ready  
+- [ ] Reverse shell listeners + HTTP server commands bookmarked  
+- [ ] Time sync correct  
 
 ### Knowledge warm-up (30–60 min)
-- [ ] Skim sink cheatsheet (`guides/Dangerous-Sinks-Cheatsheet.md`)
-- [ ] Skim chain decision trees (`guides/Chain-Decision-Trees.md`)
-- [ ] Open one prior PoC and re-run mentally: stages 0→N
-- [ ] Confirm report export path (Obsidian/Markdown → PDF + cover)
+- [ ] `Challenge-Lab-Playbook.md` (1st vs 2nd flag)  
+- [ ] Sink cheatsheet + chain trees  
+- [ ] Skim prototype pollution + SSRF + weak RNG guides  
+- [ ] Open one prior PoC cold  
+- [ ] Report export path confirmed  
 
 ### Mindset
-- Flags first, polish second
-- Script everything after first manual confirmation
-- Report as you go (do not batch reporting to the end)
-- If stuck >25–30 min on one vector: document, pivot, return later
+- Methodology first — panic grepping wastes hours  
+- Flags + **reliable scripts** both required  
+- Report as you go after each flag  
+- Stuck >25–30 min: note, pivot target or phase, return later
 
 ---
 
@@ -52,12 +82,13 @@ Adjust to actual exam machine count/points. Treat each target as:
 
 ## First 30 minutes (any machine)
 
-1. **Scope & notes file** — copy CASE template; fill Environment (URLs, ports, creds if given, stack).
-2. **Map surface** — spider / browse; note auth roles; list interesting params and file types.
-3. **Source access** — download source or decompile WARs/DLLs; note version strings.
-4. **Tech fingerprint** — language (PHP/Java/.NET/Node), DB hints, template engine, upload paths.
-5. **Dangerous-sink pass** — 10 min grep using `guides/Dangerous-Sinks-Cheatsheet.md`.
-6. **Hypothesis** — write 1–2 vulnerability hypotheses before deep-diving.
+1. **Read exam control panel / RoE** carefully (paths, objectives, points).  
+2. **Brief glance at both targets** — pick the more approachable first (you need both eventually).  
+3. **CASE notes** — Environment for target A.  
+4. **Black-box tour 10–20 min** — no source yet (see Challenge-Lab-Playbook).  
+5. **Source / decompile** — on **debug VM**; do not assume browser VS Code.  
+6. **Setup debug workflow early** if useful (SSH, jadx, logs) — [Remote-Debugging-and-Decompilation.md](guides/Remote-Debugging-and-Decompilation.md).  
+7. **Hypotheses** — 1st-flag vs 2nd-flag oriented.
 
 ---
 
@@ -91,14 +122,16 @@ Stop grepping after you have a confirmed path. Finish the chain before hunting s
 
 ## PoC discipline under time pressure
 
-1. Copy advanced skeleton → `poc.py` for this target.
-2. Stages always: recon → authenticate (if needed) → exploit → verify → cleanup notes.
-3. Enable proxy toggle for debugging; disable for speed runs.
-4. Log every HTTP status and key response snippet.
-5. One working flag path > perfect code.
-6. Keep secrets/URLs in argparse or env, not hard-coded mid-script mess.
+1. Copy advanced skeleton + paste from `snippets/` (csrf, blind extract, upload).  
+2. Stages: recon → auth/bypass → priv → OS impact → verify.  
+3. Proxy on while developing; **off for final / grading-style runs**.  
+4. After first flag: freeze stages, screenshot, draft report section, **then** push RCE.  
+5. After all flags: revert targets, run every PoC from exam Kali **twice**.  
+6. Fix “works on my burp session only” bugs (cookies, CSRF, missing headers).  
 
-Minimum viable PoC: non-interactive, takes IP/port/creds, prints flag or clear success marker.
+**Failure mode**: all flags manual, scripts fail for grader → fail.  
+
+Minimum viable PoC: non-interactive, argparse targets, prints flag or clear marker.
 
 ---
 
@@ -167,6 +200,9 @@ MySQL sleep:     SELECT SLEEP(5)
 
 | File | Use |
 |------|-----|
+| [Challenge-Lab-Playbook.md](Challenge-Lab-Playbook.md) | Two-flag methodology |
+| [snippets/](snippets/) | Exam snippet library |
+| [Reporting-Tooling.md](Reporting-Tooling.md) | Sysreptor / report flow |
 | [Progress-Tracker.md](Progress-Tracker.md) | Pre-exam readiness |
 | [Speed-Drills.md](Speed-Drills.md) | Timed practice |
 | [Report-Snippet-Templates.md](Report-Snippet-Templates.md) | Report sections |

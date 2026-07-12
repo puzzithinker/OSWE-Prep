@@ -20,6 +20,8 @@ This repo is documentation + production-quality Python PoC examples + Docker tea
 | Lab Setup Matrix | Skill → lab/PoC pairing | [Lab-Setup-Matrix.md](Lab-Setup-Matrix.md) |
 | **Docker Labs** | One-command vulnerable apps for every major class | [labs/README.md](labs/README.md) |
 | Documentation index | Map of all guides, labs, drills, and PoCs | [DOCUMENTATION.md](DOCUMENTATION.md) |
+| **Challenge Lab playbook** | Two-flag white-box method (2025–26 style) | [Challenge-Lab-Playbook.md](Challenge-Lab-Playbook.md) |
+| Snippet library | Reusable PoC fragments for exam speed | [snippets/](snippets/) |
 | PoC Methodology | The reusable skeleton + patterns used in all examples | [Building a Reusable OSWE PoC Skeleton.md](Building%20a%20Reusable%20OSWE%20PoC%20Skeleton.md) |
 | Exploit Writing | Practical `requests` patterns, stages, context objects | [Exploit Writing for OSWE.md](Exploit%20Writing%20for%20OSWE.md) |
 | Complete PoC Guide | Navigation + how the different examples and advanced skeleton fit together | [COMPLETE-POC-GUIDE.md](COMPLETE-POC-GUIDE.md) |
@@ -38,12 +40,16 @@ See the Roadmap for the recommended order and time boxes.
 | Study log | Session diary + weak areas | [study-log/](study-log/) |
 | Sink cheatsheet | 15-min white-box greps by language | [guides/Dangerous-Sinks-Cheatsheet.md](guides/Dangerous-Sinks-Cheatsheet.md) |
 | Chain decision trees | “I found X → next Y” pivots | [guides/Chain-Decision-Trees.md](guides/Chain-Decision-Trees.md) |
+| PortSwigger tracker | Script Academy labs for OSWE themes | [PortSwigger-Lab-Tracker.md](PortSwigger-Lab-Tracker.md) |
+| bmdyy labs | Free white-box Docker apps | [bmdyy-Labs.md](bmdyy-Labs.md) |
+| Reporting tooling | Sysreptor / report-as-you-go | [Reporting-Tooling.md](Reporting-Tooling.md) |
 
 ### Methodology guides
 
 | Topic | Guide |
 |-------|-------|
 | Code review checklists | [guides/Code-Review-Checklists.md](guides/Code-Review-Checklists.md) |
+| Remote debug & decompile | [guides/Remote-Debugging-and-Decompilation.md](guides/Remote-Debugging-and-Decompilation.md) |
 | Advanced SQLi | [guides/Advanced-SQLi-Techniques.md](guides/Advanced-SQLi-Techniques.md) |
 | Blind SQLi automation | [guides/Blind-SQLi-Automation.md](guides/Blind-SQLi-Automation.md) |
 | Postgres SQLi → RCE | [guides/Postgres-SQLi-to-RCE.md](guides/Postgres-SQLi-to-RCE.md) |
@@ -51,7 +57,11 @@ See the Roadmap for the recommended order and time boxes.
 | .NET deserialization | [guides/DotNet-Deserialization-Guide.md](guides/DotNet-Deserialization-Guide.md) |
 | PHP deserialization | [guides/PHP-Deserialization-Patterns.md](guides/PHP-Deserialization-Patterns.md) |
 | PHP type juggling | [guides/PHP-Type-Juggling-Methodology.md](guides/PHP-Type-Juggling-Methodology.md) |
+| Prototype pollution | [guides/Prototype-Pollution-Methodology.md](guides/Prototype-Pollution-Methodology.md) |
 | XSS → RCE chaining | [guides/XSS-to-RCE-Chaining.md](guides/XSS-to-RCE-Chaining.md) |
+| SSRF chaining | [guides/SSRF-Chaining.md](guides/SSRF-Chaining.md) |
+| Weak tokens / RNG | [guides/Weak-Token-and-RNG.md](guides/Weak-Token-and-RNG.md) |
+| WebSockets | [guides/WebSocket-Attack-Patterns.md](guides/WebSocket-Attack-Patterns.md) |
 | File upload → RCE | [guides/File-Upload-to-RCE.md](guides/File-Upload-to-RCE.md) |
 | LFI → RCE | [guides/LFI-to-RCE.md](guides/LFI-to-RCE.md) |
 | XXE | [guides/XXE-Attack-Vectors.md](guides/XXE-Attack-Vectors.md) |
@@ -134,10 +144,12 @@ Python examples of pocs that can be used for write single click pocs
 | Order | Name | Type | Link |
 |--- | ----- | ----- | --- |
 | 1 | Python requests documentation | https://docs.python-requests.org/en/master/ |
-| 2 | HTB Scripts | https://github.com/s0j0hn/AWAE-OSWE-Prep |
-| 3 | OutHackThem - Single Script Exploit | https://github.com/wetw0rk/AWAE-PREP/tree/master/Community%20Contributions%20%26%20Enhancements/Code%20Improvements/XSS%20and%20MySQL/OutHackThem%20-%20Single%20Script%20Exploit |
-| 4 | SQLi scripts |  https://github.com/wetw0rk/AWAE-PREP/tree/master/Community%20Contributions%20%26%20Enhancements/Challenges/PortSwigger |
-| 5 | A python based blind SQL injection exploitation script|  https://github.com/21y4d/blindSQLir |
+| 2 | **This repo snippet library** | [snippets/](snippets/) |
+| 3 | Curl Converter | https://curlconverter.com/ |
+| 4 | HTB Scripts | https://github.com/s0j0hn/AWAE-OSWE-Prep |
+| 5 | OutHackThem - Single Script Exploit | https://github.com/wetw0rk/AWAE-PREP/tree/master/Community%20Contributions%20%26%20Enhancements/Code%20Improvements/XSS%20and%20MySQL/OutHackThem%20-%20Single%20Script%20Exploit |
+| 6 | SQLi scripts |  https://github.com/wetw0rk/AWAE-PREP/tree/master/Community%20Contributions%20%26%20Enhancements/Challenges/PortSwigger |
+| 7 | A python based blind SQL injection exploitation script|  https://github.com/21y4d/blindSQLir |
 
 
 
@@ -162,14 +174,20 @@ Exam related resources that might be useful
 | Order |  Name | Link |
 |--- | ----- | ---- | 
 | 1 | Proctoring Student Manual | https://help.offensive-security.com/hc/en-us/articles/360050299352-Proctoring-Tool-Student-Manual |
-| 2 | OSWE / WEB-300 Exam Guide | https://help.offensive-security.com/hc/en-us/articles/360046869951-WEB-300-Advanced-Web-Attacks-and-Exploitation-OSWE-Exam-Guide |
+| 2 | OSWE / WEB-300 Exam Guide | https://help.offsec.com/hc/en-us/articles/360046869951-WEB-300-Advanced-Web-Attacks-and-Exploitation-OSWE-Exam-Guide |
 | 3 | Offsec Report Template Generator | https://github.com/noraj/OSCP-Exam-Report-Template-Markdown |
-| 4 | oswe review - tips and tricks | https://www.youtube.com/watch?v=ElZ7fFE9Gr4 |
-| 5 | OSWE Review (AWAE Course) | https://stacktrac3.co/oswe-review-awae-course/#Losing_Steam_and_Yolo%E2%80%99ing_It |
-| 6 | Obligatory OSWE Retrospective (2025) | https://notateamserver.xyz/blog/oswe-review/ |
-| 7 | OffSec Web Expert (OSWE) Review (2025) | https://steflan-security.com/offsec-web-expert-oswe-review/ |
-| 8 | WEB-300 OSWE Review (2025) | https://medium.com/@jake.mayhew/web-300-oswe-review-offsec-web-expert-46074fbdb237 |
-| 9 | OffSec AWAE/OSWE Review — 2026 | https://rootshooter.medium.com/offsec-awae-oswe-review-2026-cad3c1e15946 |
+| 4 | Sysreptor (practice reporting) | https://github.com/syslifters/sysreptor |
+| 5 | Curl Converter (Burp → Python) | https://curlconverter.com/ |
+| 6 | The OSWE Guide — BRM (2026) | https://www.brunorochamoura.com/posts/oswe-guide/ |
+| 7 | OSWE Review & Tips video (2026) — BRM | https://www.youtube.com/watch?v=SSr_pkW3Ug8 |
+| 8 | OffSec AWAE/OSWE Review — 2026 | https://rootshooter.medium.com/offsec-awae-oswe-review-2026-cad3c1e15946 |
+| 9 | OffSec Web Expert (OSWE) Review (2025) | https://steflan-security.com/offsec-web-expert-oswe-review/ |
+| 10 | WEB-300 OSWE Review (2025) | https://medium.com/@jake.mayhew/web-300-oswe-review-offsec-web-expert-46074fbdb237 |
+| 11 | OSWE Course Review & Prep Tips (2026) | https://infosecwriteups.com/offsec-web-expert-oswe-course-review-and-preparation-tips-e67d71b6490c |
+| 12 | FlashGenius OSWE 2026 Guide | https://flashgenius.net/blog-article/oswe-certification-ultimate-2025-guide-to-offsec-web-300 |
+| 13 | Obligatory OSWE Retrospective (2025) | https://notateamserver.xyz/blog/oswe-review/ |
+| 14 | oswe review - tips and tricks | https://www.youtube.com/watch?v=ElZ7fFE9Gr4 |
+| 15 | OSWE Review (AWAE Course) | https://stacktrac3.co/oswe-review-awae-course/#Losing_Steam_and_Yolo%E2%80%99ing_It |
 
 
 ### HTB Writeups
