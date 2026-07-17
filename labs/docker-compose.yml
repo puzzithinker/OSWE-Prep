@@ -90,6 +90,19 @@ services:
     build: ../poc-examples/dotnet-viewstate-deserialization/lab
     ports: ["8113:8080"]
 
+  # --- modern 2026 topics (default profile) ---
+  prototype-pollution:
+    build: ../poc-examples/prototype-pollution/lab
+    ports: ["8114:3000"]
+
+  ssrf:
+    build: ../poc-examples/ssrf-chaining/lab
+    ports: ["8115:8080"]
+
+  websocket:
+    build: ../poc-examples/websocket-injection/lab
+    ports: ["8116:8080"]
+
   # --- heavy profile ---
   java-deserial:
     profiles: ["heavy"]

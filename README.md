@@ -18,7 +18,7 @@ This repo is documentation + production-quality Python PoC examples + Docker tea
 | Progress Tracker | Honest readiness checklist by vuln class | [Progress-Tracker.md](Progress-Tracker.md) |
 | Exam-Day Runbook | Time boxes, pivot rules, pre-exam ops | [Exam-Day-Runbook.md](Exam-Day-Runbook.md) |
 | Lab Setup Matrix | Skill → lab/PoC pairing | [Lab-Setup-Matrix.md](Lab-Setup-Matrix.md) |
-| **Docker Labs** | One-command vulnerable apps for every major class | [labs/README.md](labs/README.md) |
+| **Docker Labs** | One-command vulnerable apps (classic + 2026 PP/SSRF/WS) | [labs/README.md](labs/README.md) |
 | Documentation index | Map of all guides, labs, drills, and PoCs | [DOCUMENTATION.md](DOCUMENTATION.md) |
 | **Challenge Lab playbook** | Two-flag white-box method (2025–26 style) | [Challenge-Lab-Playbook.md](Challenge-Lab-Playbook.md) |
 | Snippet library | Reusable PoC fragments for exam speed | [snippets/](snippets/) |

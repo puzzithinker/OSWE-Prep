@@ -496,9 +496,14 @@ Educational use only. See main repository license.
 | 8111 | Java deserial | `java-deserial` (profile heavy) |
 | 8112 | MSSQL SQLi | `mssql-sqli` (profile heavy) |
 | 8113 | .NET JSON deserial | `dotnet-json` |
+| 8114 | Prototype pollution | `prototype-pollution` |
+| 8115 | SSRF chaining | `ssrf` |
+| 8116 | WebSocket injection | `websocket` |
 
 ```bash
 cd ../labs && ./labctl.sh up
+# modern 2026 trio only:
+./labctl.sh up prototype-pollution ssrf websocket
 ```
 
 ## Quick Start Checklist

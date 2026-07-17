@@ -1,0 +1,5 @@
+services:
+  prototype-pollution:
+    build: .
+    ports:
+      - "8114:3000"

@@ -2,7 +2,7 @@
 
 **Why**: Recent WEB-300 reviews list advanced SSRF alongside classic classes. Alone, SSRF is recon; chained, it becomes RCE or secret theft.
 
-**Related**: XXE guide (SSRF via XML) · Challenge-Lab-Playbook · Chain-Decision-Trees.
+**Related**: Docker lab `ssrf` (:8115) · XXE guide (SSRF via XML) · Challenge-Lab-Playbook · Chain-Decision-Trees.
 
 ---
 

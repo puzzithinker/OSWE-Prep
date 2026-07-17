@@ -7,7 +7,7 @@ How to navigate this OSWE preparation repository.
 ## New here?
 
 1. **[OSWE-Study-Roadmap.md](OSWE-Study-Roadmap.md)** — 8-week plan and priorities  
-2. **[labs/README.md](labs/README.md)** — `./labctl.sh up` Docker teaching labs  
+2. **[labs/README.md](labs/README.md)** — `./labctl.sh up` Docker teaching labs (includes PP `:8114`, SSRF `:8115`, WebSocket `:8116`)  
 3. **[Challenge-Lab-Playbook.md](Challenge-Lab-Playbook.md)** — official Challenge Lab / exam two-flag method  
 4. **[Progress-Tracker.md](Progress-Tracker.md)** — track readiness by vuln class  
 5. **[Lab-Setup-Matrix.md](Lab-Setup-Matrix.md)** — skill → lab port → guide/PoC  

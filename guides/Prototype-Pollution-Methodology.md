@@ -2,7 +2,7 @@
 
 **Why it matters (2025–2026)**: WEB-300 includes server-side prototype pollution (often Node) chained to template engines / dangerous option objects → impact beyond “just a JS oddity.” Multiple recent reviews call this module standout.
 
-**Companions**: PortSwigger Prototype Pollution labs · SSTI guide · Challenge-Lab-Playbook · sinks cheatsheet (Node).
+**Companions**: Docker lab `prototype-pollution` (:8114) · PortSwigger PP labs · SSTI guide · Challenge-Lab-Playbook · sinks cheatsheet (Node).
 
 ---
 

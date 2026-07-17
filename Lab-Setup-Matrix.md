@@ -31,6 +31,9 @@ All default labs: `cd labs && ./labctl.sh up` — see [labs/README.md](labs/READ
 | Java deserial | `java-deserial` (profile `heavy`) | http://127.0.0.1:8111 | `poc-examples/java-deserialization-commons/lab/` |
 | MSSQL SQLi | `mssql-sqli` (profile `heavy`) | http://127.0.0.1:8112 | `poc-examples/mssql-sqli-xp-cmdshell/lab/` |
 | .NET JSON deserial | `dotnet-json` | http://127.0.0.1:8113 | `poc-examples/dotnet-viewstate-deserialization/lab/` |
+| Prototype pollution | `prototype-pollution` | http://127.0.0.1:8114 | `poc-examples/prototype-pollution/lab/` |
+| SSRF chaining | `ssrf` | http://127.0.0.1:8115 | `poc-examples/ssrf-chaining/lab/` |
+| WebSocket injection | `websocket` | http://127.0.0.1:8116 | `poc-examples/websocket-injection/lab/` |
 
 These are **teaching clones** of the vuln class (not full vendor products). Use course VMs for exact ATutor/Atmail/ManageEngine when available.
 
@@ -52,6 +55,9 @@ These are **teaching clones** of the vuln class (not full vendor products). Use 
 | SSTI Jinja | `notes/SSTI-JINJA2-FLASK.md` | `poc-examples/ssti-jinja2-flask/` | `:8102` |
 | XXE | `notes/XXE-FILE-READ-SSRF.md` | `poc-examples/xxe-file-read-ssrf/` | `:8103` |
 | File upload | `notes/FILE-UPLOAD-TO-RCE.md` | `poc-examples/file-upload-rce/` | `:8101` |
+| Prototype pollution | `poc-examples/prototype-pollution/Notes.md` | `poc-examples/prototype-pollution/` | `:8114` |
+| SSRF chaining | `poc-examples/ssrf-chaining/Notes.md` | `poc-examples/ssrf-chaining/` | `:8115` |
+| WebSocket injection | `poc-examples/websocket-injection/Notes.md` | `poc-examples/websocket-injection/` | `:8116` |
 
 **Always read** each `poc-examples/*/lab/README.md` and `Notes.md`.
 
@@ -98,7 +104,9 @@ cd labs && ./labctl.sh up && ./labctl.sh smoke
 |-------------|------------|
 | Challenge Lab method / two flags | `Challenge-Lab-Playbook.md` |
 | Snippet speed | `snippets/` + re-script one old lab |
-| Prototype pollution | PortSwigger PP + `guides/Prototype-Pollution-Methodology.md` |
+| Prototype pollution | Docker `:8114` + PortSwigger PP + `guides/Prototype-Pollution-Methodology.md` |
+| SSRF chaining | Docker `:8115` + `guides/SSRF-Chaining.md` |
+| WebSocket / live channels | Docker `:8116` + `guides/WebSocket-Attack-Patterns.md` |
 | Debugger / decompile | `guides/Remote-Debugging-and-Decompilation.md` |
 | PoC skeleton | `poc-examples/advanced-skeleton/` + Week 1 roadmap |
 | Blind SQLi | PortSwigger blind labs → `guides/Blind-SQLi-Automation.md` → second-order PoC |

@@ -38,6 +38,9 @@ pg-sqli         http://127.0.0.1:8110
 java-deserial   http://127.0.0.1:8111  (profile: heavy)
 mssql-sqli      http://127.0.0.1:8112  (profile: heavy)
 dotnet-json     http://127.0.0.1:8113
+prototype-pollution  http://127.0.0.1:8114
+ssrf            http://127.0.0.1:8115
+websocket       http://127.0.0.1:8116  (ws://127.0.0.1:8116/ws)
 EOF
 }
 
@@ -65,6 +68,9 @@ second-order http://127.0.0.1:8108/
 xss-chain http://127.0.0.1:8109/
 pg-sqli http://127.0.0.1:8110/
 dotnet-json http://127.0.0.1:8113/
+prototype-pollution http://127.0.0.1:8114/health
+ssrf http://127.0.0.1:8115/health
+websocket http://127.0.0.1:8116/health
 EOF
   echo "OK=$ok FAIL=$fail"
 }

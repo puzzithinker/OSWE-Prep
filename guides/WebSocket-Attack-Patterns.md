@@ -2,7 +2,7 @@
 
 **Why**: 2026 reviews mention WebSocket surfaces (including command-style messages) in modern WEB-300 material and labs.
 
-**Related**: `snippets/websocket_client.py` · CMDi / SSTI / SQLi guides · Challenge-Lab-Playbook.
+**Related**: Docker lab `websocket` (:8116) · `snippets/websocket_client.py` · CMDi / SSTI / SQLi guides · Challenge-Lab-Playbook.
 
 ---
 
